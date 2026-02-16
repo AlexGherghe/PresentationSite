@@ -64,14 +64,51 @@ function copyDir(src, dest) {
 /** Wrap content with the base template */
 function wrapInBase(content, options = {}) {
     const base = readTemplate('base.html');
+    const cacheBust = Date.now().toString(36);
     return base
         .replace(/\{\{title\}\}/g, options.title || 'Alexandru Gherghe')
         .replace(/\{\{meta_description\}\}/g, options.description || 'Alexandru Gherghe — Software Engineer. Blog, tutorials, and articles about software engineering and AI.')
         .replace(/\{\{root\}\}/g, options.root || '')
         .replace(/\{\{head_extra\}\}/g, options.headExtra || '')
+        .replace(/\{\{cache_bust\}\}/g, cacheBust)
         .replace(/\{\{nav_home_active\}\}/g, options.activeNav === 'home' ? 'active' : '')
         .replace(/\{\{nav_blog_active\}\}/g, options.activeNav === 'blog' ? 'active' : '')
         .replace(/\{\{content\}\}/g, content);
+}
+
+// ========================================
+// Post-process code blocks
+// ========================================
+const COPY_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>`;
+const CHECK_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+const CHEVRON_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`;
+
+function postProcessCodeBlocks(html) {
+    // Match entire <pre><code class="language-xxx">...content...</code></pre> blocks
+    // Using [\s\S]*? for non-greedy match across newlines
+    return html.replace(
+        /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g,
+        (match, lang, content) => {
+            const displayLang = lang.charAt(0).toUpperCase() + lang.slice(1);
+            return `<div class="code-block" data-lang="${lang}">
+  <div class="code-block__header">
+    <span class="code-block__lang">${displayLang}</span>
+    <button class="code-block__copy" aria-label="Copy code">
+      <span class="code-block__copy-icon">${COPY_ICON}</span>
+      <span class="code-block__copy-check">${CHECK_ICON}</span>
+      <span class="code-block__copy-text">Copy</span>
+    </button>
+  </div>
+  <div class="code-block__body">
+    <pre class="line-numbers"><code class="language-${lang}">${content}</code></pre>
+  </div>
+  <button class="code-block__expand" aria-label="Expand code">
+    <span>Show more</span>
+    ${CHEVRON_ICON}
+  </button>
+</div>`;
+        }
+    );
 }
 
 // ========================================
@@ -88,7 +125,7 @@ function parsePosts() {
     return files.map(file => {
         const raw = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
         const { data, content } = matter(raw);
-        const htmlContent = marked(content);
+        const htmlContent = postProcessCodeBlocks(marked(content));
 
         return {
             title: data.title || 'Untitled',
@@ -180,7 +217,9 @@ function build() {
     // Prism.js CDN for syntax highlighting
     const prismHead = `
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
