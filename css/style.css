@@ -623,6 +623,24 @@ img {
   color: var(--accent-hover);
 }
 
+.article-body figure {
+  margin: 24px 0;
+}
+
+.article-body figure img {
+  display: block;
+  max-width: 100%;
+  border-radius: var(--radius-md);
+}
+
+.article-body figcaption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  font-style: italic;
+}
+
 /* Code — inline */
 .article-body code {
   font-family: var(--font-mono);

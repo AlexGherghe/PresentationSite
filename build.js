@@ -3,6 +3,26 @@ const path = require('path');
 const matter = require('gray-matter');
 const { marked } = require('marked');
 
+// Custom renderer to add IDs to headings for anchor links
+const renderer = new marked.Renderer();
+renderer.heading = function ({ text, depth }) {
+    const slug = text
+        .toLowerCase()
+        .replace(/<[^>]*>/g, '')     // strip HTML tags
+        .replace(/[^\w\s-]/g, '')    // remove special characters
+        .replace(/\s+/g, '-')        // spaces to hyphens
+        .replace(/-+/g, '-')         // collapse multiple hyphens
+        .trim();
+    return `<h${depth} id="${slug}">${text}</h${depth}>\n`;
+};
+renderer.image = function ({ href, title, text }) {
+    if (title) {
+        return `<figure><img src="${href}" alt="${text}" title="${title}"><figcaption>${title}</figcaption></figure>\n`;
+    }
+    return `<img src="${href}" alt="${text}">\n`;
+};
+marked.setOptions({ renderer });
+
 // ========================================
 // Configuration
 // ========================================
