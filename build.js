@@ -3,6 +3,37 @@ const path = require('path');
 const matter = require('gray-matter');
 const { marked } = require('marked');
 
+// Custom Math Extension for Marked
+const mathExtension = {
+    name: 'math',
+    level: 'inline',
+    start(src) { return src.indexOf('$'); },
+    tokenizer(src, tokens) {
+        const blockMatch = /^\$\$([\s\S]+?)\$\$/.exec(src);
+        if (blockMatch) {
+            return {
+                type: 'math',
+                raw: blockMatch[0],
+                text: blockMatch[1].trim(),
+                displayMode: true
+            };
+        }
+        const inlineMatch = /^\$([^$\n]+)\$/.exec(src);
+        if (inlineMatch) {
+            return {
+                type: 'math',
+                raw: inlineMatch[0],
+                text: inlineMatch[1].trim(),
+                displayMode: false
+            };
+        }
+    },
+    renderer(token) {
+        return token.displayMode ? `\\[ ${token.text} \\]` : `\\( ${token.text} \\)`;
+    }
+};
+marked.use({ extensions: [mathExtension] });
+
 // Custom renderer to add IDs to headings for anchor links
 const renderer = new marked.Renderer();
 renderer.heading = function ({ text, depth }) {
@@ -93,7 +124,7 @@ function wrapInBase(content, options = {}) {
         .replace(/\{\{cache_bust\}\}/g, cacheBust)
         .replace(/\{\{nav_home_active\}\}/g, options.activeNav === 'home' ? 'active' : '')
         .replace(/\{\{nav_blog_active\}\}/g, options.activeNav === 'blog' ? 'active' : '')
-        .replace(/\{\{content\}\}/g, content);
+        .replace(/\{\{content\}\}/g, () => content);
 }
 
 // ========================================
@@ -238,13 +269,16 @@ function build() {
     const prismHead = `
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>`;
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>`;
 
     for (const post of posts) {
         const tagsHtml = post.tags
@@ -257,7 +291,7 @@ function build() {
             .replace('{{date}}', post.dateFormatted)
             .replace('{{reading_time}}', post.readingTime)
             .replace('{{tags}}', tagsHtml)
-            .replace('{{content}}', post.content);
+            .replace('{{content}}', () => post.content);
 
         const articlePage = wrapInBase(articleContent, {
             title: `${post.title} — Alexandru Gherghe`,
