@@ -72,14 +72,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       },
       {
-        threshold: 0.05,
-        rootMargin: '50px 0px 0px 0px'
+        threshold: 0.01,
+        rootMargin: '50px 0px 200px 0px'
       }
     );
 
     // Small delay to ensure layout is settled before observing
     requestAnimationFrame(() => {
       fadeElements.forEach(el => observer.observe(el));
+    });
+
+    // Safety net: if elements are already in/near the viewport on load,
+    // make them visible immediately (handles race conditions on navigation)
+    requestAnimationFrame(() => {
+      fadeElements.forEach(el => {
+        if (el.classList.contains('visible')) return;
+        const rect = el.getBoundingClientRect();
+        const inViewport = rect.top < window.innerHeight + 200 && rect.bottom > -50;
+        if (inViewport) {
+          el.classList.add('visible');
+          observer.unobserve(el);
+        }
+      });
     });
   } else {
     // Fallback: just show everything
@@ -205,5 +219,103 @@ document.addEventListener('DOMContentLoaded', () => {
         initScrollHints();
       });
     });
+  }
+
+  // ========================================
+  // Table of Contents
+  // ========================================
+  const tocToggle = document.getElementById('toc-toggle');
+  const toc = document.getElementById('toc');
+  const tocOverlay = document.getElementById('toc-overlay');
+  const tocClose = document.getElementById('toc-close');
+
+  if (tocToggle && toc) {
+    function openTOC() {
+      toc.classList.add('active');
+      tocToggle.classList.add('active');
+      if (tocOverlay) tocOverlay.classList.add('active');
+    }
+
+    function closeTOC() {
+      toc.classList.remove('active');
+      tocToggle.classList.remove('active');
+      if (tocOverlay) tocOverlay.classList.remove('active');
+    }
+
+    function toggleTOC() {
+      if (toc.classList.contains('active')) {
+        closeTOC();
+      } else {
+        openTOC();
+      }
+    }
+
+    tocToggle.addEventListener('click', toggleTOC);
+
+    if (tocClose) {
+      tocClose.addEventListener('click', closeTOC);
+    }
+
+    if (tocOverlay) {
+      tocOverlay.addEventListener('click', closeTOC);
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toc.classList.contains('active')) {
+        closeTOC();
+      }
+    });
+
+    // Smooth scroll to section when clicking a TOC link
+    const tocLinks = toc.querySelectorAll('.toc__link');
+    tocLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('data-target');
+        const targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          const offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 72;
+          const top = targetEl.getBoundingClientRect().top + window.scrollY - offset - 16;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+
+        // Close TOC on mobile after clicking
+        if (window.innerWidth <= 768) {
+          closeTOC();
+        }
+      });
+    });
+
+    // Active heading tracking with IntersectionObserver
+    const headingIds = Array.from(tocLinks).map(l => l.getAttribute('data-target'));
+    const headingElements = headingIds.map(id => document.getElementById(id)).filter(Boolean);
+
+    if (headingElements.length > 0) {
+      const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 72;
+
+      const observerOptions = {
+        rootMargin: `-${navHeight + 20}px 0px -60% 0px`,
+        threshold: 0
+      };
+
+      let currentActiveId = null;
+
+      const headingObserver = new IntersectionObserver((entries) => {
+        // Find the topmost visible heading
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            currentActiveId = entry.target.id;
+          }
+        });
+
+        // Update active link
+        tocLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('data-target') === currentActiveId);
+        });
+      }, observerOptions);
+
+      headingElements.forEach(el => headingObserver.observe(el));
+    }
   }
 });

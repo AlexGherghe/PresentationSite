@@ -134,6 +134,51 @@ const COPY_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" s
 const CHECK_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
 const CHEVRON_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`;
 
+const TOC_ICON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="15" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>`;
+const TOC_CLOSE_ICON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+
+// ========================================
+// Generate Table of Contents HTML
+// ========================================
+function generateTOC(htmlContent) {
+    const headingRegex = /<h([23]) id="([^"]+)">([\s\S]*?)<\/h[23]>/g;
+    const headings = [];
+    let match;
+
+    while ((match = headingRegex.exec(htmlContent)) !== null) {
+        headings.push({
+            level: parseInt(match[1]),
+            id: match[2],
+            text: match[3].replace(/<[^>]*>/g, '') // Strip any inner HTML tags
+        });
+    }
+
+    if (headings.length < 2) return ''; // Don't show TOC for very short articles
+
+    const tocItems = headings.map(h => {
+        const indent = h.level === 3 ? ' toc__link--sub' : '';
+        return `<a href="#${h.id}" class="toc__link${indent}" data-target="${h.id}">${h.text}</a>`;
+    }).join('\n            ');
+
+    return `
+    <!-- Table of Contents -->
+    <button class="toc-toggle" id="toc-toggle" aria-label="Table of Contents">
+        <span class="toc-toggle__icon toc-toggle__icon--open">${TOC_ICON}</span>
+        <span class="toc-toggle__icon toc-toggle__icon--close">${TOC_CLOSE_ICON}</span>
+        <span class="toc-toggle__label">Contents</span>
+    </button>
+    <nav class="toc" id="toc" aria-label="Table of Contents">
+        <div class="toc__header">
+            <span class="toc__title">Contents</span>
+            <button class="toc__close" id="toc-close" aria-label="Close table of contents">${TOC_CLOSE_ICON}</button>
+        </div>
+        <div class="toc__links">
+            ${tocItems}
+        </div>
+    </nav>
+    <div class="toc-overlay" id="toc-overlay"></div>`;
+}
+
 function postProcessCodeBlocks(html) {
     // Match entire <pre><code class="language-xxx">...content...</code></pre> blocks
     // Using [\s\S]*? for non-greedy match across newlines
@@ -285,12 +330,16 @@ function build() {
             .map(tag => `<span class="tag">${tag}</span>`)
             .join('');
 
+        // Generate TOC from post content
+        const tocHtml = generateTOC(post.content);
+
         const articleContent = articleTemplate
             .replace('{{root}}', '../')
             .replace('{{title}}', post.title)
             .replace('{{date}}', post.dateFormatted)
             .replace('{{reading_time}}', post.readingTime)
             .replace('{{tags}}', tagsHtml)
+            .replace('{{toc}}', () => tocHtml)
             .replace('{{content}}', () => post.content);
 
         const articlePage = wrapInBase(articleContent, {
