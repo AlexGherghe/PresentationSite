@@ -7,6 +7,7 @@
     "dev": "node build.js && npx serve dist"
   },
   "dependencies": {
+    "google-sr": "^6.0.0",
     "gray-matter": "^4.0.3",
     "marked": "^15.0.7"
   }
