@@ -185,6 +185,10 @@ function postProcessCodeBlocks(html) {
     return html.replace(
         /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g,
         (match, lang, content) => {
+            if (lang === 'mermaid') {
+                const decoded = content.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"');
+                return `<div class="mermaid">\n${decoded}\n</div>`;
+            }
             const displayLang = lang.charAt(0).toUpperCase() + lang.slice(1);
             return `<div class="code-block" data-lang="${lang}">
   <div class="code-block__header">
@@ -323,7 +327,11 @@ function build() {
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>`;
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>`;
 
     for (const post of posts) {
         const tagsHtml = post.tags

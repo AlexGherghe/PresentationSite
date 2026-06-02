@@ -1,0 +1,237 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 700" width="920" height="700">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      text { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; }
+    </style>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e03131"/>
+    </marker>
+    <marker id="arrGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2f9e44"/>
+    </marker>
+    <marker id="arrBlue2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1971c2"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="920" height="700" rx="16" fill="#fafafa"/>
+
+  <!-- ======================================================== -->
+  <!-- TOP HALF: WITHOUT KV CACHE -->
+  <!-- ======================================================== -->
+  <rect x="16" y="16" width="888" height="310" rx="14" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+
+  <!-- Title -->
+  <rect x="32" y="30" width="200" height="30" rx="6" fill="#e03131"/>
+  <text x="132" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">✗ Without KV Cache</text>
+
+  <!-- Step labels -->
+  <text x="60" y="86" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Step 1</text>
+  <text x="60" y="170" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Step 2</text>
+  <text x="60" y="254" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Step 3</text>
+
+  <!-- ===== STEP 1 ===== -->
+  <!-- Tokens -->
+  <rect x="100" y="72" width="46" height="28" rx="6" fill="#e03131" stroke="#c92a2a" stroke-width="1"/>
+  <text x="123" y="91" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">The</text>
+
+  <!-- Arrow -->
+  <line x1="150" y1="86" x2="170" y2="86" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Transformer box -->
+  <rect x="174" y="70" width="90" height="32" rx="6" fill="#fff" stroke="#e03131" stroke-width="1.5"/>
+  <text x="219" y="91" text-anchor="middle" font-size="10" font-weight="500" fill="#e03131">Compute Q,K,V</text>
+
+  <!-- Arrow -->
+  <line x1="268" y1="86" x2="288" y2="86" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Output token -->
+  <rect x="292" y="72" width="46" height="28" rx="6" fill="#fecdd3" stroke="#e03131" stroke-width="1.5"/>
+  <text x="315" y="91" text-anchor="middle" font-size="10" font-weight="600" fill="#e03131">cat</text>
+
+  <!-- Computation count -->
+  <text x="370" y="91" font-size="10" fill="#94a3b8">1 token computed</text>
+
+  <!-- ===== STEP 2 ===== -->
+  <!-- Tokens: both recomputed -->
+  <rect x="100" y="156" width="46" height="28" rx="6" fill="#e03131" stroke="#c92a2a" stroke-width="1"/>
+  <text x="123" y="175" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">The</text>
+  <rect x="152" y="156" width="46" height="28" rx="6" fill="#e03131" stroke="#c92a2a" stroke-width="1"/>
+  <text x="175" y="175" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">cat</text>
+
+  <!-- Arrow -->
+  <line x1="202" y1="170" x2="222" y2="170" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Transformer box -->
+  <rect x="226" y="154" width="90" height="32" rx="6" fill="#fff" stroke="#e03131" stroke-width="1.5"/>
+  <text x="271" y="175" text-anchor="middle" font-size="10" font-weight="500" fill="#e03131">Compute Q,K,V</text>
+
+  <!-- Arrow -->
+  <line x1="320" y1="170" x2="340" y2="170" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Output token -->
+  <rect x="344" y="156" width="46" height="28" rx="6" fill="#fecdd3" stroke="#e03131" stroke-width="1.5"/>
+  <text x="367" y="175" text-anchor="middle" font-size="10" font-weight="600" fill="#e03131">sat</text>
+
+  <!-- Recompute indicator -->
+  <text x="420" y="175" font-size="10" fill="#e03131" font-weight="600">2 tokens recomputed!</text>
+
+  <!-- ===== STEP 3 ===== -->
+  <rect x="100" y="240" width="46" height="28" rx="6" fill="#e03131" stroke="#c92a2a" stroke-width="1"/>
+  <text x="123" y="259" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">The</text>
+  <rect x="152" y="240" width="46" height="28" rx="6" fill="#e03131" stroke="#c92a2a" stroke-width="1"/>
+  <text x="175" y="259" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">cat</text>
+  <rect x="204" y="240" width="46" height="28" rx="6" fill="#e03131" stroke="#c92a2a" stroke-width="1"/>
+  <text x="227" y="259" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">sat</text>
+
+  <!-- Arrow -->
+  <line x1="254" y1="254" x2="274" y2="254" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Transformer box -->
+  <rect x="278" y="238" width="90" height="32" rx="6" fill="#fff" stroke="#e03131" stroke-width="1.5"/>
+  <text x="323" y="259" text-anchor="middle" font-size="10" font-weight="500" fill="#e03131">Compute Q,K,V</text>
+
+  <!-- Arrow -->
+  <line x1="372" y1="254" x2="392" y2="254" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Output token -->
+  <rect x="396" y="240" width="46" height="28" rx="6" fill="#fecdd3" stroke="#e03131" stroke-width="1.5"/>
+  <text x="419" y="259" text-anchor="middle" font-size="10" font-weight="600" fill="#e03131">on</text>
+
+  <!-- Recompute indicator -->
+  <text x="472" y="259" font-size="10" fill="#e03131" font-weight="600">3 tokens recomputed!</text>
+
+  <!-- Cost summary (right side, top half) -->
+  <rect x="620" y="72" width="260" height="228" rx="12" fill="#fff" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="750" y="98" text-anchor="middle" font-size="13" font-weight="700" fill="#e03131">Computation Cost</text>
+
+  <!-- Cost breakdown -->
+  <text x="640" y="128" font-size="11" fill="#334155">Step 1:  1 token</text>
+  <text x="640" y="152" font-size="11" fill="#334155">Step 2:  2 tokens</text>
+  <text x="640" y="176" font-size="11" fill="#334155">Step 3:  3 tokens</text>
+  <text x="640" y="200" font-size="11" fill="#334155">Step n:  n tokens</text>
+  <text x="640" y="190" font-size="11" fill="#94a3b8">...</text>
+
+  <line x1="640" y1="214" x2="860" y2="214" stroke="#fca5a5" stroke-width="1"/>
+
+  <text x="640" y="238" font-size="12" font-weight="700" fill="#e03131">Total: 1+2+3+...+n</text>
+  <text x="640" y="258" font-size="14" font-weight="700" fill="#e03131">= O(n²) operations</text>
+  <text x="640" y="282" font-size="10" fill="#94a3b8">Quadratic growth per sequence</text>
+
+  <!-- ======================================================== -->
+  <!-- BOTTOM HALF: WITH KV CACHE -->
+  <!-- ======================================================== -->
+  <rect x="16" y="346" width="888" height="338" rx="14" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+
+  <!-- Title -->
+  <rect x="32" y="360" width="200" height="30" rx="6" fill="#2f9e44"/>
+  <text x="132" y="380" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">✓ With KV Cache</text>
+
+  <!-- Step labels -->
+  <text x="60" y="418" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Step 1</text>
+  <text x="60" y="502" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Step 2</text>
+  <text x="60" y="586" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Step 3</text>
+
+  <!-- ===== STEP 1 (same as before) ===== -->
+  <rect x="100" y="404" width="46" height="28" rx="6" fill="#2f9e44" stroke="#1b7a2e" stroke-width="1"/>
+  <text x="123" y="423" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">The</text>
+
+  <line x1="150" y1="418" x2="170" y2="418" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <rect x="174" y="402" width="90" height="32" rx="6" fill="#fff" stroke="#2f9e44" stroke-width="1.5"/>
+  <text x="219" y="423" text-anchor="middle" font-size="10" font-weight="500" fill="#2f9e44">Compute Q,K,V</text>
+
+  <line x1="268" y1="418" x2="288" y2="418" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Output token -->
+  <rect x="292" y="404" width="46" height="28" rx="6" fill="#dcfce7" stroke="#2f9e44" stroke-width="1.5"/>
+  <text x="315" y="423" text-anchor="middle" font-size="10" font-weight="600" fill="#2f9e44">cat</text>
+
+  <!-- Save to cache arrow -->
+  <path d="M 235 436 C 235 452, 410 448, 410 440" fill="none" stroke="#1971c2" stroke-width="1.2" stroke-dasharray="4 2" marker-end="url(#arrBlue2)"/>
+  <text x="310" y="454" text-anchor="middle" font-size="9" fill="#1971c2" font-weight="500">save K,V</text>
+
+  <!-- Cache block step 1 -->
+  <rect x="400" y="404" width="80" height="28" rx="5" fill="#dbeafe" stroke="#1971c2" stroke-width="1.2"/>
+  <text x="440" y="423" text-anchor="middle" font-size="9" font-weight="600" fill="#1971c2">Cache: [The]</text>
+
+  <text x="500" y="423" font-size="10" fill="#94a3b8">1 token computed</text>
+
+  <!-- ===== STEP 2: only new token ===== -->
+  <!-- Cached token (grayed out / dimmed) -->
+  <rect x="100" y="488" width="46" height="28" rx="6" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 2"/>
+  <text x="123" y="507" text-anchor="middle" font-size="10" font-weight="500" fill="#94a3b8">The</text>
+  <text x="123" y="530" text-anchor="middle" font-size="8" fill="#1971c2">cached</text>
+
+  <!-- New token -->
+  <rect x="152" y="488" width="46" height="28" rx="6" fill="#2f9e44" stroke="#1b7a2e" stroke-width="1"/>
+  <text x="175" y="507" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">cat</text>
+
+  <line x1="202" y1="502" x2="222" y2="502" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Only compute for new token -->
+  <rect x="226" y="486" width="90" height="32" rx="6" fill="#fff" stroke="#2f9e44" stroke-width="1.5"/>
+  <text x="271" y="500" text-anchor="middle" font-size="9" font-weight="500" fill="#2f9e44">Compute Q,K,V</text>
+  <text x="271" y="512" text-anchor="middle" font-size="8" fill="#2f9e44">for "cat" only</text>
+
+  <line x1="320" y1="502" x2="340" y2="502" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <rect x="344" y="488" width="46" height="28" rx="6" fill="#dcfce7" stroke="#2f9e44" stroke-width="1.5"/>
+  <text x="367" y="507" text-anchor="middle" font-size="10" font-weight="600" fill="#2f9e44">sat</text>
+
+  <!-- Cache block step 2 -->
+  <rect x="400" y="488" width="120" height="28" rx="5" fill="#dbeafe" stroke="#1971c2" stroke-width="1.2"/>
+  <text x="460" y="507" text-anchor="middle" font-size="9" font-weight="600" fill="#1971c2">Cache: [The, cat]</text>
+
+  <text x="540" y="507" font-size="10" fill="#2f9e44" font-weight="600">1 token computed!</text>
+
+  <!-- ===== STEP 3 ===== -->
+  <rect x="100" y="572" width="46" height="28" rx="6" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 2"/>
+  <text x="123" y="591" text-anchor="middle" font-size="10" font-weight="500" fill="#94a3b8">The</text>
+  <rect x="152" y="572" width="46" height="28" rx="6" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 2"/>
+  <text x="175" y="591" text-anchor="middle" font-size="10" font-weight="500" fill="#94a3b8">cat</text>
+  <text x="148" y="614" text-anchor="middle" font-size="8" fill="#1971c2">cached</text>
+
+  <!-- New token -->
+  <rect x="204" y="572" width="46" height="28" rx="6" fill="#2f9e44" stroke="#1b7a2e" stroke-width="1"/>
+  <text x="227" y="591" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">sat</text>
+
+  <line x1="254" y1="586" x2="274" y2="586" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <rect x="278" y="570" width="90" height="32" rx="6" fill="#fff" stroke="#2f9e44" stroke-width="1.5"/>
+  <text x="323" y="584" text-anchor="middle" font-size="9" font-weight="500" fill="#2f9e44">Compute Q,K,V</text>
+  <text x="323" y="596" text-anchor="middle" font-size="8" fill="#2f9e44">for "sat" only</text>
+
+  <line x1="372" y1="586" x2="392" y2="586" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <rect x="396" y="572" width="46" height="28" rx="6" fill="#dcfce7" stroke="#2f9e44" stroke-width="1.5"/>
+  <text x="419" y="591" text-anchor="middle" font-size="10" font-weight="600" fill="#2f9e44">on</text>
+
+  <!-- Cache block step 3 -->
+  <rect x="452" y="572" width="150" height="28" rx="5" fill="#dbeafe" stroke="#1971c2" stroke-width="1.2"/>
+  <text x="527" y="591" text-anchor="middle" font-size="9" font-weight="600" fill="#1971c2">Cache: [The, cat, sat]</text>
+
+  <text x="622" y="591" font-size="10" fill="#2f9e44" font-weight="600">1 token computed!</text>
+
+  <!-- Cost summary (right side, bottom half) -->
+  <rect x="660" y="404" width="220" height="228" rx="12" fill="#fff" stroke="#86efac" stroke-width="1.5"/>
+  <text x="770" y="430" text-anchor="middle" font-size="13" font-weight="700" fill="#2f9e44">Computation Cost</text>
+
+  <!-- Cost breakdown -->
+  <text x="680" y="460" font-size="11" fill="#334155">Step 1:  1 token</text>
+  <text x="680" y="484" font-size="11" fill="#334155">Step 2:  1 token</text>
+  <text x="680" y="508" font-size="11" fill="#334155">Step 3:  1 token</text>
+  <text x="680" y="532" font-size="11" fill="#334155">Step n:  1 token</text>
+  <text x="680" y="522" font-size="11" fill="#94a3b8">...</text>
+
+  <line x1="680" y1="546" x2="860" y2="546" stroke="#86efac" stroke-width="1"/>
+
+  <text x="680" y="570" font-size="12" font-weight="700" fill="#2f9e44">Total: 1+1+1+...+1</text>
+  <text x="680" y="590" font-size="14" font-weight="700" fill="#2f9e44">= O(n) operations</text>
+  <text x="680" y="614" font-size="10" fill="#94a3b8">Linear growth per sequence</text>
+</svg>

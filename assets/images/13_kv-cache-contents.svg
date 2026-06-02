@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 470" width="860" height="470">
+  <defs>
+    <marker id="aG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+    </marker>
+    <marker id="aO" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e8590c"/>
+    </marker>
+    <marker id="aGr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9e44"/>
+    </marker>
+    <marker id="aP" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="aB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1971c2"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="860" height="470" rx="14" fill="#fafafa"/>
+
+  <!-- ============================================ -->
+  <!-- INPUT: Token Embedding                      -->
+  <!-- ============================================ -->
+  <rect x="24" y="168" width="130" height="80" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+  <text x="89" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#334155">Token</text>
+  <text x="89" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#334155">Embedding</text>
+  <text x="89" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-style="italic" fill="#64748b">x</text>
+
+  <!-- ============================================ -->
+  <!-- Branch lines from embedding to three lanes   -->
+  <!-- ============================================ -->
+  <line x1="154" y1="208" x2="185" y2="208" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="185" y1="75" x2="185" y2="345" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="185" y1="75" x2="220" y2="75" stroke="#94a3b8" stroke-width="2" marker-end="url(#aG)"/>
+  <line x1="185" y1="208" x2="220" y2="208" stroke="#94a3b8" stroke-width="2" marker-end="url(#aG)"/>
+  <line x1="185" y1="345" x2="220" y2="345" stroke="#94a3b8" stroke-width="2" marker-end="url(#aG)"/>
+
+  <!-- ============================================ -->
+  <!-- WEIGHT MATRICES (column 2)                   -->
+  <!-- ============================================ -->
+
+  <!-- W_Q -->
+  <rect x="224" y="50" width="116" height="52" rx="10" fill="#fff4e6" stroke="#e8590c" stroke-width="2"/>
+  <text x="282" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" fill="#e8590c">W<tspan font-size="11" dy="4">Q</tspan></text>
+  <text x="282" y="92" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#c2410c">weight matrix</text>
+
+  <!-- W_K -->
+  <rect x="224" y="183" width="116" height="52" rx="10" fill="#ecfdf5" stroke="#2f9e44" stroke-width="2"/>
+  <text x="282" y="208" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" fill="#2f9e44">W<tspan font-size="11" dy="4">K</tspan></text>
+  <text x="282" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#16a34a">weight matrix</text>
+
+  <!-- W_V -->
+  <rect x="224" y="320" width="116" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="282" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" fill="#7c3aed">W<tspan font-size="11" dy="4">V</tspan></text>
+  <text x="282" y="362" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d28d9">weight matrix</text>
+
+  <!-- ============================================ -->
+  <!-- ARROWS: Matrices -> Result Vectors           -->
+  <!-- ============================================ -->
+  <line x1="340" y1="76" x2="395" y2="76" stroke="#e8590c" stroke-width="2" marker-end="url(#aO)"/>
+  <line x1="340" y1="209" x2="395" y2="209" stroke="#2f9e44" stroke-width="2" marker-end="url(#aGr)"/>
+  <line x1="340" y1="346" x2="395" y2="346" stroke="#7c3aed" stroke-width="2" marker-end="url(#aP)"/>
+
+  <!-- ============================================ -->
+  <!-- RESULT VECTORS (column 3)                    -->
+  <!-- ============================================ -->
+
+  <!-- Query -->
+  <rect x="399" y="50" width="120" height="52" rx="10" fill="#fff7ed" stroke="#e8590c" stroke-width="2.5"/>
+  <text x="459" y="74" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" fill="#e8590c">Query</text>
+  <text x="459" y="92" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-style="italic" fill="#c2410c">q = x * W<tspan font-size="8" dy="3">Q</tspan></text>
+
+  <!-- Key -->
+  <rect x="399" y="183" width="120" height="52" rx="10" fill="#ecfdf5" stroke="#2f9e44" stroke-width="2.5"/>
+  <text x="459" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" fill="#2f9e44">Key</text>
+  <text x="459" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-style="italic" fill="#16a34a">k = x * W<tspan font-size="8" dy="3">K</tspan></text>
+
+  <!-- Value -->
+  <rect x="399" y="320" width="120" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="459" y="344" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" fill="#7c3aed">Value</text>
+  <text x="459" y="362" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-style="italic" fill="#6d28d9">v = x * W<tspan font-size="8" dy="3">V</tspan></text>
+
+  <!-- ============================================ -->
+  <!-- ARROWS FROM VECTORS OUTWARD                  -->
+  <!-- ============================================ -->
+
+  <!-- Query -> Attention -->
+  <line x1="519" y1="76" x2="614" y2="76" stroke="#e8590c" stroke-width="2" marker-end="url(#aO)"/>
+
+  <!-- Key -> KV Cache -->
+  <line x1="519" y1="209" x2="614" y2="250" stroke="#2f9e44" stroke-width="2" marker-end="url(#aGr)"/>
+
+  <!-- Value -> KV Cache -->
+  <line x1="519" y1="346" x2="614" y2="310" stroke="#7c3aed" stroke-width="2" marker-end="url(#aP)"/>
+
+  <!-- ============================================ -->
+  <!-- ATTENTION COMPUTATION (top right)            -->
+  <!-- ============================================ -->
+  <rect x="618" y="36" width="220" height="80" rx="12" fill="#fff7ed" stroke="#e8590c" stroke-width="2" stroke-dasharray="6 3"/>
+  <text x="728" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#e8590c">Attention Score</text>
+  <text x="728" y="82" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#c2410c">softmax(q * K&#x1D40; / &#x221A;d)</text>
+  <text x="728" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">computed fresh each time</text>
+
+  <!-- Arrow from KV Cache up to Attention -->
+  <line x1="728" y1="210" x2="728" y2="118" stroke="#1971c2" stroke-width="2" marker-end="url(#aB)"/>
+  <text x="744" y="168" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#1971c2">K, V</text>
+  <text x="744" y="182" font-family="system-ui, sans-serif" font-size="9" fill="#1971c2">from cache</text>
+
+  <!-- ============================================ -->
+  <!-- KV CACHE BOX (right side)                    -->
+  <!-- ============================================ -->
+  <rect x="618" y="214" width="220" height="200" rx="14" fill="#eff6ff" stroke="#1971c2" stroke-width="3" stroke-dasharray="8 4"/>
+
+  <!-- Title -->
+  <text x="728" y="244" text-anchor="middle" font-family="system-ui, sans-serif" font-size="17" font-weight="bold" fill="#1971c2">KV Cache</text>
+  <text x="728" y="262" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#3b82f6">stored in GPU VRAM</text>
+
+  <!-- Cached Keys -->
+  <rect x="640" y="276" width="176" height="40" rx="8" fill="#dcfce7" stroke="#2f9e44" stroke-width="2"/>
+  <text x="728" y="293" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#2f9e44">Cached Keys</text>
+  <text x="728" y="308" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#16a34a">[k1, k2, ..., kn]</text>
+
+  <!-- Cached Values -->
+  <rect x="640" y="326" width="176" height="40" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="728" y="343" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#7c3aed">Cached Values</text>
+  <text x="728" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d28d9">[v1, v2, ..., vn]</text>
+
+  <!-- Per-layer note -->
+  <text x="728" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">per attention layer, per head</text>
+
+  <!-- ============================================ -->
+  <!-- BOTTOM LEGEND                                -->
+  <!-- ============================================ -->
+  <rect x="24" y="420" width="812" height="36" rx="8" fill="#f8fafc"/>
+  <circle cx="44" cy="438" r="6" fill="#e8590c"/>
+  <text x="56" y="442" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Query: recomputed each step</text>
+  <circle cx="280" cy="438" r="6" fill="#2f9e44"/>
+  <text x="292" y="442" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Key: cached for reuse</text>
+  <circle cx="480" cy="438" r="6" fill="#7c3aed"/>
+  <text x="492" y="442" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Value: cached for reuse</text>
+  <rect x="680" y="430" width="14" height="14" rx="3" fill="#eff6ff" stroke="#1971c2" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <text x="700" y="442" font-family="system-ui, sans-serif" font-size="11" fill="#475569">KV Cache</text>
+</svg>
