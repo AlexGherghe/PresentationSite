@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 520" width="820" height="520">
+  <defs>
+    <marker id="arR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e03131"/>
+    </marker>
+    <marker id="arG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9e44"/>
+    </marker>
+    <marker id="arB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1971c2"/>
+    </marker>
+    <marker id="arD" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#495057"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="820" height="520" rx="14" fill="#fafafa"/>
+
+  <!-- Title -->
+  <text x="410" y="36" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#334155">Example: Decoding 0.15625 (Single Precision)</text>
+
+  <!-- ============================================ -->
+  <!-- Bit bar at top                               -->
+  <!-- ============================================ -->
+  <rect x="50" y="58" width="48" height="38" rx="6" fill="#fff5f5" stroke="#e03131" stroke-width="2"/>
+  <text x="74" y="82" text-anchor="middle" font-family="'Courier New', monospace" font-size="18" font-weight="bold" fill="#e03131">0</text>
+
+  <rect x="108" y="58" width="210" height="38" rx="6" fill="#ebfbee" stroke="#2f9e44" stroke-width="2"/>
+  <text x="213" y="82" text-anchor="middle" font-family="'Courier New', monospace" font-size="18" font-weight="bold" fill="#2f9e44">01111100</text>
+
+  <rect x="328" y="58" width="442" height="38" rx="6" fill="#e7f5ff" stroke="#1971c2" stroke-width="2"/>
+  <text x="549" y="82" text-anchor="middle" font-family="'Courier New', monospace" font-size="15" font-weight="bold" fill="#1971c2">01000000000000000000000</text>
+
+  <!-- Labels below bit bar -->
+  <text x="74" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e03131">Sign</text>
+  <text x="213" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#2f9e44">Exponent (8 bits)</text>
+  <text x="549" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1971c2">Mantissa (23 bits)</text>
+
+  <!-- ============================================ -->
+  <!-- Arrows from bit bar to cards                 -->
+  <!-- ============================================ -->
+  <line x1="74" y1="120" x2="74" y2="148" stroke="#e03131" stroke-width="2" marker-end="url(#arR)"/>
+  <line x1="213" y1="120" x2="340" y2="148" stroke="#2f9e44" stroke-width="2" marker-end="url(#arG)"/>
+  <line x1="549" y1="120" x2="650" y2="148" stroke="#1971c2" stroke-width="2" marker-end="url(#arB)"/>
+
+  <!-- ============================================ -->
+  <!-- CARD 1: Sign                                 -->
+  <!-- ============================================ -->
+  <rect x="24" y="152" width="160" height="130" rx="12" fill="#fff5f5" stroke="#e03131" stroke-width="2"/>
+
+  <text x="104" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#e03131">Sign</text>
+
+  <line x1="44" y1="188" x2="164" y2="188" stroke="#fcc2c2" stroke-width="1"/>
+
+  <text x="104" y="214" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#495057">(-1)</text>
+  <text x="130" y="206" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#e03131">0</text>
+
+  <text x="104" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#495057">= positive</text>
+
+  <rect x="54" y="256" width="100" height="16" rx="4" fill="#e03131" opacity="0.1"/>
+  <text x="104" y="268" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#e03131">+1</text>
+
+  <!-- ============================================ -->
+  <!-- CARD 2: Exponent                             -->
+  <!-- ============================================ -->
+  <rect x="220" y="152" width="240" height="130" rx="12" fill="#ebfbee" stroke="#2f9e44" stroke-width="2"/>
+
+  <text x="340" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#2f9e44">Exponent</text>
+
+  <line x1="240" y1="188" x2="440" y2="188" stroke="#b2f2bb" stroke-width="1"/>
+
+  <text x="340" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#495057">01111100₂ = 124</text>
+
+  <text x="340" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#495057">124 - 127 (bias) = -3</text>
+
+  <rect x="280" y="250" width="120" height="20" rx="4" fill="#2f9e44" opacity="0.1"/>
+  <text x="340" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#2f9e44">2⁻³ = 0.125</text>
+
+  <!-- ============================================ -->
+  <!-- CARD 3: Mantissa                             -->
+  <!-- ============================================ -->
+  <rect x="496" y="152" width="300" height="130" rx="12" fill="#e7f5ff" stroke="#1971c2" stroke-width="2"/>
+
+  <text x="646" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#1971c2">Mantissa</text>
+
+  <line x1="516" y1="188" x2="776" y2="188" stroke="#a5d8ff" stroke-width="1"/>
+
+  <text x="646" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#495057">0·½ + 1·¼ + 0·⅛ + ... = 0.25</text>
+
+  <text x="646" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#495057">Add hidden 1: 1 + 0.25</text>
+
+  <rect x="586" y="250" width="120" height="20" rx="4" fill="#1971c2" opacity="0.1"/>
+  <text x="646" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#1971c2">1.25</text>
+
+  <!-- ============================================ -->
+  <!-- Arrows from cards to formula                 -->
+  <!-- ============================================ -->
+  <line x1="104" y1="282" x2="104" y2="320" stroke="#e03131" stroke-width="2"/>
+  <line x1="104" y1="320" x2="300" y2="360" stroke="#e03131" stroke-width="2" marker-end="url(#arR)"/>
+
+  <line x1="340" y1="282" x2="340" y2="320" stroke="#2f9e44" stroke-width="2"/>
+  <line x1="340" y1="320" x2="380" y2="360" stroke="#2f9e44" stroke-width="2" marker-end="url(#arG)"/>
+
+  <line x1="646" y1="282" x2="646" y2="320" stroke="#1971c2" stroke-width="2"/>
+  <line x1="646" y1="320" x2="490" y2="360" stroke="#1971c2" stroke-width="2" marker-end="url(#arB)"/>
+
+  <!-- ============================================ -->
+  <!-- Formula row                                  -->
+  <!-- ============================================ -->
+  <rect x="180" y="364" width="440" height="50" rx="12" fill="#f8f9fa" stroke="#ced4da" stroke-width="1.5"/>
+
+  <text x="310" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#495057">
+    <tspan fill="#e03131" font-weight="bold">+1</tspan>
+    <tspan fill="#868e96">  ×  </tspan>
+    <tspan fill="#1971c2" font-weight="bold">1.25</tspan>
+    <tspan fill="#868e96">  ×  </tspan>
+    <tspan fill="#2f9e44" font-weight="bold">2⁻³</tspan>
+  </text>
+
+  <text x="502" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#868e96">=</text>
+
+  <text x="566" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#495057">1.25 × 0.125</text>
+
+  <!-- ============================================ -->
+  <!-- Arrow to result                              -->
+  <!-- ============================================ -->
+  <line x1="400" y1="414" x2="400" y2="442" stroke="#495057" stroke-width="2" marker-end="url(#arD)"/>
+
+  <!-- ============================================ -->
+  <!-- Final result                                 -->
+  <!-- ============================================ -->
+  <rect x="300" y="448" width="200" height="50" rx="12" fill="#334155" stroke="none"/>
+  <text x="400" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="bold" fill="#ffffff">= 0.15625</text>
+
+</svg>
