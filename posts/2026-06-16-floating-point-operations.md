@@ -76,7 +76,7 @@ Given that the exponent is, well, exponential, the distance between two consecut
 This means that these $2^{52}$ intermediary points have to cover a greater and greater distance. So, as we deal with larger numbers, our precision decreases. 
 This is why we have a concept called **Unit of Last Precision (ULP)**, which is the distance between two consecutive floating point numbers at a given magnitude.
 
-To see this in practice, try evaluating `11.0e16 + 1.0 == 1.0e16` in Java. It evaluates to `True`. At a magnitude of $10^{16}$, the gap (ULP) between consecutive floating point numbers is actually larger than 1. Adding 1 simply gets rounded away because the next representable number is 2 units away.
+To see this in practice, try evaluating `1.0e16 + 1.0 == 1.0e16` in Java. It evaluates to `True`. At a magnitude of $10^{16}$, the gap (ULP) between consecutive floating point numbers is actually larger than 1. Adding 1 simply gets rounded away because the next representable number is 2 units away.
 
 ## Takeaways
 
