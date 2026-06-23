@@ -1,0 +1,125 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 600" width="1480" height="600">
+<metadata></metadata>
+<defs>
+<style class="style-fonts">
+@font-face { font-family: Excalifont; src: url(data:font/woff2;base64,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); }
+</style>
+</defs>
+<rect x="0" y="0" width="1480" height="600" fill="#ffffff"></rect>
+
+<!-- HEAD Node -->
+<g transform="translate(40 100)">
+    <rect x="0" y="0" width="180" height="80" rx="8" stroke="#9c36b5" stroke-width="3" fill="#f3d9fa"></rect>
+    <text x="90" y="30" font-family="Excalifont, Xiaolai, sans-serif" font-size="24px" fill="#9c36b5" text-anchor="middle" dominant-baseline="central">HEAD</text>
+    <text x="90" y="60" font-family="Excalifont, Xiaolai, sans-serif" font-size="14px" fill="#9c36b5" text-anchor="middle" dominant-baseline="central">ref: refs/heads/main</text>
+</g>
+
+<!-- Arrow HEAD -> Branch -->
+<g stroke-linecap="round" stroke-linejoin="round" transform="translate(130 180)">
+    <path d="M0 0 L0 70 L-8 55 M0 70 L8 55" stroke="#868e96" stroke-width="3" fill="none"></path>
+</g>
+
+<!-- Branch Node -->
+<g transform="translate(40 250)">
+    <rect x="0" y="0" width="180" height="80" rx="8" stroke="#9c36b5" stroke-width="3" fill="#f3d9fa"></rect>
+    <text x="90" y="30" font-family="Excalifont, Xiaolai, sans-serif" font-size="24px" fill="#9c36b5" text-anchor="middle" dominant-baseline="central">Branch: main</text>
+    <text x="90" y="60" font-family="Excalifont, Xiaolai, sans-serif" font-size="14px" fill="#9c36b5" text-anchor="middle" dominant-baseline="central">8a2f3...</text>
+</g>
+
+<!-- Arrow Branch -> Commit 2 -->
+<g stroke-linecap="round" stroke-linejoin="round" transform="translate(220 290)">
+    <path d="M0 0 L80 0 L65 -8 M80 0 L65 8" stroke="#868e96" stroke-width="3" fill="none"></path>
+</g>
+
+<!-- Commit 2 Node (Current) -->
+<g transform="translate(300 220)">
+    <rect x="0" y="0" width="220" height="140" rx="8" stroke="#e03131" stroke-width="3" fill="#ffe3e3"></rect>
+    <text x="110" y="30" font-family="Excalifont, Xiaolai, sans-serif" font-size="24px" fill="#e03131" text-anchor="middle" dominant-baseline="central">Commit</text>
+    <text x="110" y="60" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#e03131" text-anchor="middle" dominant-baseline="central">tree 5c3a...</text>
+    <text x="110" y="90" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#e03131" text-anchor="middle" dominant-baseline="central">parent 9b1e...</text>
+    <text x="110" y="120" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#e03131" text-anchor="middle" dominant-baseline="central">author AlexGherghe</text>
+</g>
+
+<!-- Arrow Commit 2 -> Commit 1 (Parent) -->
+<g stroke-linecap="round" stroke-linejoin="round" transform="translate(410 360)">
+    <path d="M0 0 L0 70 L-8 55 M0 70 L8 55" stroke="#868e96" stroke-width="3" fill="none"></path>
+    <text x="35" y="35" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#868e96" text-anchor="middle">parent</text>
+</g>
+
+<!-- Commit 1 Node (Parent) -->
+<g transform="translate(300 430)">
+    <rect x="0" y="0" width="220" height="110" rx="8" stroke="#e03131" stroke-width="3" fill="#ffe3e3"></rect>
+    <text x="110" y="30" font-family="Excalifont, Xiaolai, sans-serif" font-size="24px" fill="#e03131" text-anchor="middle" dominant-baseline="central">Commit (Parent)</text>
+    <text x="110" y="60" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#e03131" text-anchor="middle" dominant-baseline="central">tree 2d8f...</text>
+    <text x="110" y="90" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#e03131" text-anchor="middle" dominant-baseline="central">author AlexGherghe</text>
+</g>
+
+<!-- Arrow Commit 2 -> Tree -->
+<g stroke-linecap="round" stroke-linejoin="round" transform="translate(520 280)">
+    <path d="M0 0 L80 0 L65 -8 M80 0 L65 8" stroke="#868e96" stroke-width="3" fill="none"></path>
+    <text x="40" y="-15" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#868e96" text-anchor="middle">tree</text>
+</g>
+
+<!-- Tree Node (Root) -->
+<g transform="translate(600 220)">
+    <rect x="0" y="0" width="240" height="120" rx="8" stroke="#2f9e44" stroke-width="3" fill="#ebfbee"></rect>
+    <text x="120" y="30" font-family="Excalifont, Xiaolai, sans-serif" font-size="24px" fill="#2f9e44" text-anchor="middle" dominant-baseline="central">Tree</text>
+    <text x="120" y="70" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#2f9e44" text-anchor="middle" dominant-baseline="central">blob 7e1b... file.txt</text>
+    <text x="120" y="100" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#2f9e44" text-anchor="middle" dominant-baseline="central">tree a4f3... src/</text>
+</g>
+
+<!-- Arrow Tree -> Blob 1 -->
+<g stroke-linecap="round" stroke-linejoin="round" transform="translate(840 290)">
+    <path d="M0 0 L80 -130 L65 -125 M80 -130 L75 -115" stroke="#868e96" stroke-width="3" fill="none"></path>
+</g>
+
+<!-- Arrow Tree -> Tree (src) -->
+<g stroke-linecap="round" stroke-linejoin="round" transform="translate(840 320)">
+    <path d="M0 0 L80 0 L65 -8 M80 0 L65 8" stroke="#868e96" stroke-width="3" fill="none"></path>
+</g>
+
+<!-- Blob 1 Node -->
+<g transform="translate(920 110)">
+    <rect x="0" y="0" width="200" height="100" rx="8" stroke="#1971c2" stroke-width="3" fill="#e7f5ff"></rect>
+    <text x="100" y="30" font-family="Excalifont, Xiaolai, sans-serif" font-size="24px" fill="#1971c2" text-anchor="middle" dominant-baseline="central">Blob</text>
+    <text x="100" y="60" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#1971c2" text-anchor="middle" dominant-baseline="central">7e1b...</text>
+    <text x="100" y="85" font-family="Excalifont, Xiaolai, sans-serif" font-size="14px" fill="#1971c2" text-anchor="middle" dominant-baseline="central">"Hello World"</text>
+</g>
+
+<!-- Tree Node (src/) -->
+<g transform="translate(920 260)">
+    <rect x="0" y="0" width="240" height="120" rx="8" stroke="#2f9e44" stroke-width="3" fill="#ebfbee"></rect>
+    <text x="120" y="30" font-family="Excalifont, Xiaolai, sans-serif" font-size="24px" fill="#2f9e44" text-anchor="middle" dominant-baseline="central">Tree (src/)</text>
+    <text x="120" y="70" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#2f9e44" text-anchor="middle" dominant-baseline="central">blob 3c2d... main.c</text>
+    <text x="120" y="100" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#2f9e44" text-anchor="middle" dominant-baseline="central">blob 8f4e... README.md</text>
+</g>
+
+<!-- Arrow Tree (src) -> Blob 2 -->
+<g stroke-linecap="round" stroke-linejoin="round" transform="translate(1160 330)">
+    <path d="M0 0 L80 -130 L65 -125 M80 -130 L75 -115" stroke="#868e96" stroke-width="3" fill="none"></path>
+</g>
+
+<!-- Arrow Tree (src) -> Blob 3 -->
+<g stroke-linecap="round" stroke-linejoin="round" transform="translate(1160 360)">
+    <path d="M0 0 L80 50 L65 42 M80 50 L75 35" stroke="#868e96" stroke-width="3" fill="none"></path>
+</g>
+
+<!-- Blob 2 Node -->
+<g transform="translate(1240 150)">
+    <rect x="0" y="0" width="200" height="100" rx="8" stroke="#1971c2" stroke-width="3" fill="#e7f5ff"></rect>
+    <text x="100" y="30" font-family="Excalifont, Xiaolai, sans-serif" font-size="24px" fill="#1971c2" text-anchor="middle" dominant-baseline="central">Blob</text>
+    <text x="100" y="60" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#1971c2" text-anchor="middle" dominant-baseline="central">3c2d...</text>
+    <text x="100" y="85" font-family="Excalifont, Xiaolai, sans-serif" font-size="14px" fill="#1971c2" text-anchor="middle" dominant-baseline="central">int main() {...}</text>
+</g>
+
+<!-- Blob 3 Node -->
+<g transform="translate(1240 360)">
+    <rect x="0" y="0" width="200" height="100" rx="8" stroke="#1971c2" stroke-width="3" fill="#e7f5ff"></rect>
+    <text x="100" y="30" font-family="Excalifont, Xiaolai, sans-serif" font-size="24px" fill="#1971c2" text-anchor="middle" dominant-baseline="central">Blob</text>
+    <text x="100" y="60" font-family="Excalifont, Xiaolai, sans-serif" font-size="16px" fill="#1971c2" text-anchor="middle" dominant-baseline="central">8f4e...</text>
+    <text x="100" y="85" font-family="Excalifont, Xiaolai, sans-serif" font-size="14px" fill="#1971c2" text-anchor="middle" dominant-baseline="central">"# Welcome to Git"</text>
+</g>
+
+</svg>
