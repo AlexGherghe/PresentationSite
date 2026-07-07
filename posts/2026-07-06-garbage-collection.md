@@ -18,7 +18,7 @@ The garbage collector will keep an object alive as long as it is reachable. (As 
 
 Simple version: If your code can still reach an object, the garbage collector considers it alive. If you need to access a static variable that points to an object that points to another object that points to another object ... you can reach all of them and they are still considered alive.
 
-Comprehensive version: The JVM builds graphs of references starting from **GC roots**. To be technically precise, roots are usually the *references* themselves (like pointers in a stack frame or registers), not the objects. The objects they point to are the first living objects in the heap. Any objects that can be reached from a root are considered alive as well. 
+Comprehensive version: The JVM builds graphs of references starting from **GC roots**. To be technically precise, roots are usually the **references** themselves (like pointers in a stack frame or registers), not the objects. The objects they point to are the first living objects in the heap. Any objects that can be reached from a root are considered alive as well. 
 
 There are a few types of GC roots:
 - Variables on the stack: Local variables are GC roots for as long as the method they are local to is executing. This is also true for method parameters and everything currently in the stack.
