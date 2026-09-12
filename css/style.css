@@ -641,7 +641,6 @@ img {
 .article-body img {
   display: block;
   max-width: 100%;
-  max-height: 500px;
   object-fit: contain;
   margin: 0 auto;
   border-radius: var(--radius-md);
@@ -1780,12 +1779,184 @@ code[class*="language-"] {
 }
 
 /* ========================================
+   Email Flow Diagram
+   ======================================== */
+.email-flow {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 2rem 1.5rem;
+  margin: 2rem 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.email-flow__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.email-flow__node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius-md);
+  padding: 14px 24px;
+  min-width: 180px;
+  max-width: 260px;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.email-flow__node:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(96, 165, 250, 0.15);
+}
+
+.email-flow__node--end {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--bg-primary), rgba(96, 165, 250, 0.08));
+}
+
+.email-flow__icon {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.email-flow__node strong {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.email-flow__desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.email-flow__arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.email-flow__line {
+  width: 2px;
+  height: 28px;
+  background: var(--accent);
+  position: relative;
+}
+
+.email-flow__line::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--accent);
+}
+
+.email-flow__label {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 500;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding: 2px 10px;
+  background: rgba(96, 165, 250, 0.08);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* DNS side-node: sits to the right on desktop, stacks below on mobile */
+.email-flow__step:has(.email-flow__side-node) {
+  position: relative;
+}
+
+.email-flow__side-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 110px;
+  height: 110px;
+  justify-content: center;
+  padding: 12px;
+  position: absolute;
+  right: 10%;
+  top: 0;
+  border-style: dashed;
+}
+
+.email-flow__side-node .email-flow__icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.email-flow__side-node strong {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.email-flow__side-node .email-flow__desc {
+  font-size: 0.65rem;
+  line-height: 1.3;
+}
+
+@media (max-width: 768px) {
+  .email-flow {
+    padding: 1.5rem 1rem;
+  }
+
+  .email-flow__node {
+    min-width: 150px;
+    max-width: 220px;
+    padding: 12px 16px;
+  }
+
+  .email-flow__side-node {
+    position: static;
+    border-radius: var(--radius-md);
+    width: auto;
+    height: auto;
+    margin-top: 8px;
+    padding: 10px 16px;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .email-flow__side-node .email-flow__icon {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+
+  .email-flow__side-node .email-flow__desc {
+    font-size: 0.7rem;
+  }
+
+  .email-flow__label {
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* ========================================
    Mermaid Diagrams
    ======================================== */
 .mermaid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
+  text-align: center;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -1801,8 +1972,10 @@ code[class*="language-"] {
 }
 
 .mermaid svg {
-  max-width: 100%;
+  min-width: 750px;
+  max-width: max-content;
   height: auto;
+  margin: 0 auto;
 }
 
 .mermaid svg text {

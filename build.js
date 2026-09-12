@@ -330,7 +330,45 @@ function build() {
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true });
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: isLight ? 'default' : 'dark',
+      themeVariables: isLight ? {
+        fontFamily: "'Inter', sans-serif"
+      } : {
+        fontFamily: "'Inter', sans-serif",
+        darkMode: true,
+        background: '#1a2233',
+        mainBkg: '#1e293b',
+        textColor: '#e4e8f1',
+        lineColor: '#60a5fa',
+        primaryColor: '#1e293b',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#3b82f6',
+        secondaryColor: '#1e293b',
+        secondaryTextColor: '#f8fafc',
+        secondaryBorderColor: '#3b82f6',
+        tertiaryColor: '#111827',
+        tertiaryTextColor: '#cbd5e1',
+        tertiaryBorderColor: '#334155',
+        actorBkg: '#1e293b',
+        actorBorder: '#3b82f6',
+        actorTextColor: '#f8fafc',
+        actorLineColor: '#64748b',
+        signalColor: '#93c5fd',
+        signalTextColor: '#e2e8f0',
+        labelBoxBkgColor: '#1e293b',
+        labelBoxBorderColor: '#3b82f6',
+        labelTextColor: '#f8fafc',
+        noteBkgColor: '#1e293b',
+        noteTextColor: '#93c5fd',
+        noteBorderColor: '#3b82f6',
+        activationBkgColor: '#1e293b',
+        activationBorderColor: '#3b82f6',
+        sequenceNumberColor: '#0a0e17'
+      }
+    });
   </script>`;
 
     for (const post of posts) {
