@@ -57,6 +57,10 @@ marked.setOptions({ renderer });
 // ========================================
 // Configuration
 // ========================================
+const SITE_URL = 'https://alexgherghe.com';
+const SITE_NAME = 'Alexandru Gherghe';
+const AUTHOR_NAME = 'Alexandru Gherghe';
+
 const POSTS_DIR = path.join(__dirname, 'posts');
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
 const DIST_DIR = path.join(__dirname, 'dist');
@@ -80,14 +84,213 @@ function readingTime(text) {
     return Math.max(1, Math.ceil(words / wordsPerMinute));
 }
 
-/** Format a date as "Month DD, YYYY" */
-function formatDate(date) {
+/** Escape special characters for HTML attributes and meta tags */
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+/** Parse date into consistent ISO YYYY-MM-DD and formatted string */
+function parseDate(date) {
+    if (!date) return { iso: '', formatted: '' };
+    if (typeof date === 'string') {
+        const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(date);
+        if (match) {
+            const year = parseInt(match[1], 10);
+            const month = parseInt(match[2], 10) - 1;
+            const day = parseInt(match[3], 10);
+            const d = new Date(Date.UTC(year, month, day));
+            return {
+                iso: `${match[1]}-${match[2]}-${match[3]}`,
+                formatted: d.toLocaleDateString('en-US', {
+                    timeZone: 'UTC',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                })
+            };
+        }
+    }
     const d = new Date(date);
-    return d.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+    if (!isNaN(d.getTime())) {
+        const iso = d.toISOString().split('T')[0];
+        return {
+            iso,
+            formatted: d.toLocaleDateString('en-US', {
+                timeZone: 'UTC',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            })
+        };
+    }
+    return { iso: '', formatted: '' };
+}
+
+/** Format a date as "Month DD, YYYY" (fallback) */
+function formatDate(date) {
+    return parseDate(date).formatted;
+}
+
+/** Extract first image URL from raw markdown */
+function extractFirstImage(rawContent) {
+    const imgMatch = /!\[.*?\]\(([^)\s]+)(?:\s+["'].*?["'])?\)/.exec(rawContent);
+    if (!imgMatch) return null;
+    let imgPath = imgMatch[1].trim();
+    if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) {
+        return imgPath;
+    }
+    while (imgPath.startsWith('../') || imgPath.startsWith('./')) {
+        imgPath = imgPath.replace(/^\.\.?\//, '');
+    }
+    if (imgPath.startsWith('/')) {
+        imgPath = imgPath.slice(1);
+    }
+    return `${SITE_URL}/${imgPath}`;
+}
+
+/** Generate Open Graph and Twitter Card tags */
+function generateMetaTags({ title, description, url, type = 'website', image, post }) {
+    const lines = [
+        `<!-- Open Graph / Facebook -->`,
+        `<meta property="og:type" content="${type}">`,
+        `<meta property="og:url" content="${url}">`,
+        `<meta property="og:title" content="${escapeHtml(title)}">`,
+        `<meta property="og:description" content="${escapeHtml(description)}">`,
+        `<meta property="og:site_name" content="${SITE_NAME}">`
+    ];
+
+    if (image) {
+        lines.push(`<meta property="og:image" content="${image}">`);
+    }
+
+    if (post) {
+        if (post.dateIso) {
+            lines.push(`<meta property="article:published_time" content="${post.dateIso}">`);
+        }
+        lines.push(`<meta property="article:author" content="${AUTHOR_NAME}">`);
+        if (post.tags && Array.isArray(post.tags)) {
+            for (const tag of post.tags) {
+                lines.push(`<meta property="article:tag" content="${escapeHtml(tag)}">`);
+            }
+        }
+    }
+
+    lines.push(`\n  <!-- Twitter -->`);
+    lines.push(`<meta name="twitter:card" content="${image ? 'summary_large_image' : 'summary'}">`);
+    lines.push(`<meta name="twitter:title" content="${escapeHtml(title)}">`);
+    lines.push(`<meta name="twitter:description" content="${escapeHtml(description)}">`);
+    if (image) {
+        lines.push(`<meta name="twitter:image" content="${image}">`);
+    }
+
+    return lines.join('\n  ');
+}
+
+/** Structured Data JSON-LD for Home */
+function homeJsonLd() {
+    const data = {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'WebSite',
+                '@id': `${SITE_URL}/#website`,
+                'url': `${SITE_URL}/`,
+                'name': SITE_NAME,
+                'description': 'Alexandru Gherghe — Software Engineer. Blog, tutorials, and articles about software engineering and AI.',
+                'publisher': {
+                    '@id': `${SITE_URL}/#person`
+                }
+            },
+            {
+                '@type': 'Person',
+                '@id': `${SITE_URL}/#person`,
+                'name': AUTHOR_NAME,
+                'url': `${SITE_URL}/`,
+                'jobTitle': 'Software Engineer',
+                'sameAs': [
+                    'https://github.com/AlexGherghe',
+                    'https://www.linkedin.com/in/alexandru-lucian-gherghe/'
+                ]
+            }
+        ]
+    };
+    return `<script type="application/ld+json">\n  ${JSON.stringify(data, null, 2).replace(/\n/g, '\n  ')}\n  </script>`;
+}
+
+/** Structured Data JSON-LD for Blog */
+function blogJsonLd() {
+    const data = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        'name': `Blog — ${SITE_NAME}`,
+        'url': `${SITE_URL}/blog.html`,
+        'description': 'Articles, tutorials, and deep dives into software engineering by Alexandru Gherghe.',
+        'author': {
+            '@type': 'Person',
+            'name': AUTHOR_NAME,
+            'url': `${SITE_URL}/`
+        }
+    };
+    return `<script type="application/ld+json">\n  ${JSON.stringify(data, null, 2).replace(/\n/g, '\n  ')}\n  </script>`;
+}
+
+/** Structured Data JSON-LD for an Article */
+function articleJsonLd(post) {
+    const data = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        'headline': post.title,
+        'description': post.excerpt,
+        'author': {
+            '@type': 'Person',
+            'name': AUTHOR_NAME,
+            'url': `${SITE_URL}/`
+        },
+        'publisher': {
+            '@type': 'Person',
+            'name': AUTHOR_NAME,
+            'url': `${SITE_URL}/`
+        },
+        'datePublished': post.dateIso,
+        'dateModified': post.dateIso,
+        'mainEntityOfPage': {
+            '@type': 'WebPage',
+            '@id': `${SITE_URL}/articles/${post.slug}.html`
+        }
+    };
+    if (post.tags && post.tags.length > 0) {
+        data.keywords = post.tags;
+    }
+    if (post.image) {
+        data.image = post.image;
+    }
+    return `<script type="application/ld+json">\n  ${JSON.stringify(data, null, 2).replace(/\n/g, '\n  ')}\n  </script>`;
+}
+
+/** Generate XML Sitemap */
+function generateSitemap(posts) {
+    const urls = [
+        `  <url>\n    <loc>${SITE_URL}/</loc>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>`,
+        `  <url>\n    <loc>${SITE_URL}/blog.html</loc>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>`
+    ];
+
+    for (const post of posts) {
+        const lastmod = post.dateIso ? `\n    <lastmod>${post.dateIso}</lastmod>` : '';
+        urls.push(`  <url>\n    <loc>${SITE_URL}/articles/${post.slug}.html</loc>${lastmod}\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>`);
+    }
+
+    return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
+}
+
+/** Generate robots.txt */
+function generateRobotsTxt() {
+    return `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
 }
 
 /** Generate a slug from the markdown filename */
@@ -119,6 +322,9 @@ function wrapInBase(content, options = {}) {
     return base
         .replace(/\{\{title\}\}/g, options.title || 'Alexandru Gherghe')
         .replace(/\{\{meta_description\}\}/g, options.description || 'Alexandru Gherghe — Software Engineer. Blog, tutorials, and articles about software engineering and AI.')
+        .replace(/\{\{canonical_url\}\}/g, options.canonicalUrl || `${SITE_URL}/`)
+        .replace(/\{\{og_meta\}\}/g, options.ogMeta || '')
+        .replace(/\{\{structured_data\}\}/g, options.structuredData || '')
         .replace(/\{\{root\}\}/g, options.root || '')
         .replace(/\{\{head_extra\}\}/g, options.headExtra || '')
         .replace(/\{\{cache_bust\}\}/g, cacheBust)
@@ -226,13 +432,16 @@ function parsePosts() {
         const raw = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
         const { data, content } = matter(raw);
         const htmlContent = postProcessCodeBlocks(marked(content));
+        const dateInfo = parseDate(data.date);
 
         return {
             title: data.title || 'Untitled',
             date: data.date,
-            dateFormatted: formatDate(data.date),
+            dateIso: dateInfo.iso,
+            dateFormatted: dateInfo.formatted,
             tags: data.tags || [],
             excerpt: data.excerpt || '',
+            image: extractFirstImage(content),
             slug: slug(file),
             content: htmlContent,
             readingTime: readingTime(content)
@@ -288,11 +497,22 @@ function build() {
     const latestPostCards = posts.slice(0, 3).map(p => postCard(p)).join('\n');
 
     // --- Home page ---
+    const homeCanonical = `${SITE_URL}/`;
+    const homeTitle = 'Alexandru Gherghe — Software Engineer';
+    const homeDesc = 'Alexandru Gherghe — Software Engineer. Blog, tutorials, and articles about software engineering and AI.';
     const homeTemplate = readTemplate('home.html');
     const homeContent = homeTemplate.replace('{{posts}}', latestPostCards);
     const homePage = wrapInBase(homeContent, {
-        title: 'Alexandru Gherghe — Software Engineer',
-        description: 'Alexandru Gherghe — Software Engineer. Blog, tutorials, and articles about software engineering and AI.',
+        title: homeTitle,
+        description: homeDesc,
+        canonicalUrl: homeCanonical,
+        ogMeta: generateMetaTags({
+            title: homeTitle,
+            description: homeDesc,
+            url: homeCanonical,
+            type: 'website'
+        }),
+        structuredData: homeJsonLd(),
         root: '',
         activeNav: 'home'
     });
@@ -300,11 +520,22 @@ function build() {
     console.log('✅ index.html');
 
     // --- Blog page ---
+    const blogCanonical = `${SITE_URL}/blog.html`;
+    const blogTitle = 'Blog — Alexandru Gherghe';
+    const blogDesc = 'Articles, tutorials, and deep dives into software engineering by Alexandru Gherghe.';
     const blogTemplate = readTemplate('blog.html');
     const blogContent = blogTemplate.replace('{{posts}}', allPostCards);
     const blogPage = wrapInBase(blogContent, {
-        title: 'Blog — Alexandru Gherghe',
-        description: 'Articles, tutorials, and deep dives into software engineering by Alexandru Gherghe.',
+        title: blogTitle,
+        description: blogDesc,
+        canonicalUrl: blogCanonical,
+        ogMeta: generateMetaTags({
+            title: blogTitle,
+            description: blogDesc,
+            url: blogCanonical,
+            type: 'website'
+        }),
+        structuredData: blogJsonLd(),
         root: '',
         activeNav: 'blog'
     });
@@ -388,9 +619,23 @@ function build() {
             .replace('{{toc}}', () => tocHtml)
             .replace('{{content}}', () => post.content);
 
+        const articleCanonical = `${SITE_URL}/articles/${post.slug}.html`;
+        const articleTitle = `${post.title} — Alexandru Gherghe`;
+        const articleDesc = post.excerpt;
+
         const articlePage = wrapInBase(articleContent, {
-            title: `${post.title} — Alexandru Gherghe`,
-            description: post.excerpt,
+            title: articleTitle,
+            description: articleDesc,
+            canonicalUrl: articleCanonical,
+            ogMeta: generateMetaTags({
+                title: articleTitle,
+                description: articleDesc,
+                url: articleCanonical,
+                type: 'article',
+                image: post.image,
+                post
+            }),
+            structuredData: articleJsonLd(post),
             root: '../',
             headExtra: prismHead,
             activeNav: 'blog'
@@ -401,8 +646,23 @@ function build() {
         console.log(`✅ articles/${post.slug}.html`);
     }
 
+    // --- Sitemap ---
+    const sitemapContent = generateSitemap(posts);
+    fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapContent);
+    console.log('✅ sitemap.xml');
+
+    // --- Robots.txt ---
+    const robotsContent = generateRobotsTxt();
+    fs.writeFileSync(path.join(DIST_DIR, 'robots.txt'), robotsContent);
+    console.log('✅ robots.txt');
+
+    // --- CNAME for GitHub Pages ---
+    fs.writeFileSync(path.join(DIST_DIR, 'CNAME'), 'alexgherghe.com\n');
+    console.log('✅ CNAME');
+
     console.log('\n🚀 Build complete! Output in dist/');
 }
 
 // Run
 build();
+
