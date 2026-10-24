@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+<defs>
+<marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e8590c"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f9e44"/></marker>
+<style>
+text { font-family: "Segoe UI", Helvetica, Arial, sans-serif; fill: #1e1e1e; }
+.h { font-size: 20px; font-weight: 700; }
+.m { font-size: 18px; font-family: "SF Mono", Menlo, Consolas, monospace; }
+.lbl { font-size: 13px; fill: #868e96; }
+.share { font-size: 17px; font-weight: 700; }
+.foot { font-size: 14px; fill: #666; }
+</style></defs>
+<rect width="800" height="450" fill="#fff"/>
+<rect x="270" y="18" width="260" height="44" rx="22" fill="#fff9db" stroke="#f08c00" stroke-width="1.5"/>
+<text x="400" y="46" text-anchor="middle" class="m">public: p = 23, g = 5</text>
+<rect x="30" y="80" width="300" height="310" rx="10" fill="#fff5f5" stroke="#ffc9c9"/>
+<text x="180" y="112" text-anchor="middle" class="h">Client</text>
+<rect x="470" y="80" width="300" height="310" rx="10" fill="#e7f5ff" stroke="#a5d8ff"/>
+<text x="620" y="112" text-anchor="middle" class="h">Server</text>
+<text x="180" y="158" text-anchor="middle" class="m">a = 6</text>
+<text x="180" y="178" text-anchor="middle" class="lbl">random secret</text>
+<text x="620" y="158" text-anchor="middle" class="m">b = 15</text>
+<text x="620" y="178" text-anchor="middle" class="lbl">random secret</text>
+<text x="180" y="232" text-anchor="middle" class="m">5<tspan dy="-7" font-size="0.7em">6</tspan><tspan dy="7"> mod 23 = 8</tspan></text>
+<text x="180" y="252" text-anchor="middle" class="lbl">key share</text>
+<text x="620" y="232" text-anchor="middle" class="m">5<tspan dy="-7" font-size="0.7em">15</tspan><tspan dy="7"> mod 23 = 19</tspan></text>
+<text x="620" y="252" text-anchor="middle" class="lbl">key share</text>
+<line x1="290" y1="275" x2="510" y2="275" stroke="#e8590c" stroke-width="2.5" marker-end="url(#ao)"/>
+<text x="400" y="267" text-anchor="middle" class="share" style="fill:#e8590c">8</text>
+<line x1="510" y1="300" x2="290" y2="300" stroke="#2f9e44" stroke-width="2.5" marker-end="url(#ag)"/>
+<text x="400" y="320" text-anchor="middle" class="share" style="fill:#2f9e44">19</text>
+<rect x="55" y="322" width="250" height="36" rx="8" fill="#f3f0ff" stroke="#7048e8" stroke-width="1.5"/>
+<text x="180" y="346" text-anchor="middle" class="m">19<tspan dy="-7" font-size="0.7em">6</tspan><tspan dy="7"> mod 23 = </tspan><tspan font-weight="700" style="fill:#7048e8">2</tspan></text>
+<text x="180" y="377" text-anchor="middle" class="lbl">shared secret</text>
+<rect x="495" y="322" width="250" height="36" rx="8" fill="#f3f0ff" stroke="#7048e8" stroke-width="1.5"/>
+<text x="620" y="346" text-anchor="middle" class="m">8<tspan dy="-7" font-size="0.7em">15</tspan><tspan dy="7"> mod 23 = </tspan><tspan font-weight="700" style="fill:#7048e8">2</tspan></text>
+<text x="620" y="377" text-anchor="middle" class="lbl">shared secret</text>
+<text x="400" y="424" text-anchor="middle" class="foot">An eavesdropper sees 23, 5, 8 and 19, but without 6 or 15 they can’t get to 2.</text>
+</svg>
