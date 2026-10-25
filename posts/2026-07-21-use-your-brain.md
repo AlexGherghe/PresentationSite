@@ -1,7 +1,7 @@
 ---
 title: "Your Brain: Use It Or Lose It "
 date: 2026-07-21
-tags: [Computer Science]
+tags: [Engineering, AI, AI-Assisted Coding, Productivity]
 excerpt: "The more we outsource thinking on a regular basis, the less capable we are of it."
 ---
 

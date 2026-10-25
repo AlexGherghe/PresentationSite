@@ -1,7 +1,7 @@
 ---
 title: "You Can't Stop Prompt Injection (Yet)"
 date: 2026-05-19
-tags: [AI, Security, Prompt Injection]
+tags: [Security, AI, Prompt Injection, LLMs]
 excerpt: "Prompt injection is one of the most pressing security concerns for Large Language Models, and recent research has shown that it's incredibly difficult to solve."
 ---
 

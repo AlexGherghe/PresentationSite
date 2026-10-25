@@ -1,7 +1,7 @@
 ---
 title: "Stop Shaking Hands So Much (Connection Pooling)"
 date: "2026-07-28"
-tags: ["Architecture", "Performance", "TCP"]
+tags: [Networking, Databases, Performance, TCP]
 excerpt: "If you wouldn't re-introduce yourself every time you saw a coworker at the coffee machine, why are you doing it to your database?"
 ---
 

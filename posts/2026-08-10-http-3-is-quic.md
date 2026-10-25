@@ -1,7 +1,7 @@
 ---
 title: "HTTP/3 is QUIC"
 date: "2026-08-10"
-tags: ["Networking", "HTTP", "Performance", "QUIC", "UDP"]
+tags: [Networking, HTTP, QUIC, UDP]
 excerpt: "HTTP/2 fixed multiplexing, but TCP held it back. HTTP/3 ditches TCP entirely for QUIC over UDP."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "AI Hugely Increases Cognitive Load"
 date: 2026-09-08
-tags: [AI, Software Engineering]
+tags: [Engineering, AI, Cognitive Load, Productivity]
 excerpt: "How we manage cognitive load has a huge impact on our ability to solve problems and write good code. Here are some ideas and observations I've gathered that help me keep my cognitive load manageable."
 ---
 

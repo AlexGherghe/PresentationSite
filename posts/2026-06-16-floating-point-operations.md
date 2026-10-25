@@ -1,7 +1,7 @@
 ---
 title: "Why does 0.1 + 0.2 = 0.30000000000000004? IEEE 754 Floating Point numbers explained"
 date: 2026-06-16
-tags: [Computer Science, Floating Point, IEEE 754]
+tags: [Systems, Floating Point, IEEE 754]
 excerpt: "Every developer learns that 0.1 + 0.2 doesn't equal 0.3, but why? Dive under the hood of IEEE 754 to understand how floating point numbers are represented, why rounding errors happen, and the critical concept of Unit of Last Precision."
 ---
 

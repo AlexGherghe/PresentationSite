@@ -1,7 +1,7 @@
 ---
 title: "Vector Databases and HNSW: Finding Needles in a Billion-Dimensional Haystack"
 date: 2026-08-30
-tags: [AI, Databases, Vector Search, HNSW]
+tags: [Databases, AI, Vector Search, HNSW]
 excerpt: "Traditional databases are great at finding exact matches, but what happens when you need to find things that are similar? Vector databases solve this problem by storing data as high-dimensional vectors and using clever algorithms like HNSW to search through millions of them in milliseconds."
 ---
 

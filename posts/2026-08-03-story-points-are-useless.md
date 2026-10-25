@@ -1,7 +1,7 @@
 ---
 title: "Story Points Are Relatively Useless"
 date: "2026-08-03"
-tags: ["Agile", "Software Engineering", "Productivity"]
+tags: [Engineering, Agile, Estimation]
 excerpt: "We are told story points have nothing to do with time, right before using them to plan our two-week sprint."
 ---
 

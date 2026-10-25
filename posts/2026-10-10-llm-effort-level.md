@@ -1,7 +1,7 @@
 ---
 title: "Stop Turning the LLM Effort Knob to Maximum"
 date: 2026-10-10
-tags: [AI, LLMs, Software Engineering]
+tags: [AI, LLMs, Tokens]
 excerpt: "Reasoning models spend tokens thinking before they speak. But cranking test-time compute to maximum on routine tasks needlessly inflates your bill without delivering better results."
 ---
 

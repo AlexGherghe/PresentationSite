@@ -1,7 +1,7 @@
 ---
 title: "What's Up With All These Supply Chain Attacks?"
 date: 2026-03-28
-tags: [Security, Supply Chain Attacks, Vulnerabilities]
+tags: [Security, Supply Chain Attacks]
 excerpt: "Diving into the recent supply chain attacks and what we can do to protect ourselves."
 ---
 ## Supply Chain Attacks

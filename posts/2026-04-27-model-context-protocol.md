@@ -1,7 +1,7 @@
 ---
 title: "The Model Context Protocol (MCP)"
 date: 2026-04-27
-tags: [AI, LLMs, MCP, Software Engineering]
+tags: [AI, MCP, Agents, LLMs]
 excerpt: "An overview of the Model Context Protocol (MCP), why it's needed, and how it safely connects AI agents to external systems."
 ---
 

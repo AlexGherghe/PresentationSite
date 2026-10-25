@@ -1,7 +1,7 @@
 ---
 title: "Mixture of Experts: The Key to Efficient AI"
 date: 2026-05-25
-tags: [AI, MoE, Transformer, Deep Learning]
+tags: [AI, LLMs, Transformers, Mixture of Experts]
 excerpt: "Mixture of Experts (MoE) has emerged as a leading architecture for training large language models more efficiently. Instead of activating the entire model for every token, MoE uses a gating mechanism to route inputs to specialized sub-networks, or 'experts'. This allows models to scale to trillions of parameters while keeping inference costs manageable."
 ---
 

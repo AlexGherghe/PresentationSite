@@ -1,7 +1,7 @@
 ---
 title: "Are Local Models Any Good?"
 date: 2026-06-09
-tags: [AI, Transformer, Deep Learning]
+tags: [AI, LLMs, Local Models, Tokens]
 excerpt: "We're all feeling the pressure of higher and higher token costs. So can we use local models to avoid some of those costs? "
 ---
 

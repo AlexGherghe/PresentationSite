@@ -1,7 +1,7 @@
 ---
 title: "How Multimodal LLMs Work"
 date: 2026-08-17
-tags: [AI, LLM, Multimodal, Transformer, Deep Learning]
+tags: [AI, LLMs, Transformers, Multimodal]
 excerpt: "LLMs went from text-only to understanding images, audio, and video in a remarkably short time. Turns out the trick is simpler than you'd think: convert everything into tokens. Here's how images get chopped into patches, how audio becomes a spectrogram, and why some models are better at 'seeing' than others."
 ---
 

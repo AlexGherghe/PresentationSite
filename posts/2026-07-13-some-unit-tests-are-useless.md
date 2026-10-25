@@ -1,7 +1,7 @@
 ---
 title: "A Lot Of Unit Tests Are Worse Than Useless"
 date: 2026-07-13
-tags: [Computer Science]
+tags: [Engineering, Testing]
 excerpt: "Why your unit tests are likely not testing what you think they're testing"
 ---
 

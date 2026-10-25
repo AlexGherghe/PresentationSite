@@ -1,7 +1,7 @@
 ---
 title: "Query Optimizers"
 date: 2026-03-16
-tags: [Databases, SQL, Query Optimization]
+tags: [Databases, SQL, Performance]
 excerpt: "How to find out what your database is actually doing when you run a query."
 ---
 

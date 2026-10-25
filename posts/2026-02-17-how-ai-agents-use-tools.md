@@ -1,7 +1,7 @@
 ---
 title: "How AI Agents Use Tools"
 date: 2026-02-15
-tags: [AI, Agents, Tools, Tutorial]
+tags: [AI, Agents, LLMs]
 excerpt: "An exploration of how modern AI agents bridge the gap from text generation to performing real world tasks."
 ---
 

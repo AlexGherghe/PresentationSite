@@ -46,11 +46,20 @@ renderer.heading = function ({ text, depth }) {
         .trim();
     return `<h${depth} id="${slug}">${text}</h${depth}>\n`;
 };
+// Local SVG diagrams get a generated dark twin (see darkSvg); CSS shows
+// the one matching the current theme.
 renderer.image = function ({ href, title, text }) {
-    if (title) {
-        return `<figure><img src="${href}" alt="${text}" title="${title}"><figcaption>${title}</figcaption></figure>\n`;
+    const titleAttr = title ? ` title="${title}"` : '';
+    let img = `<img src="${href}" alt="${text}"${titleAttr}>`;
+    if (/^(\.\.\/)*assets\/.*\.svg$/.test(href)) {
+        const darkHref = href.replace(/\.svg$/, '.dark.svg');
+        img = `<img src="${href}" alt="${text}"${titleAttr} class="img-light" loading="lazy">` +
+            `<img src="${darkHref}" alt="${text}"${titleAttr} class="img-dark" loading="lazy">`;
     }
-    return `<img src="${href}" alt="${text}">\n`;
+    if (title) {
+        return `<figure>${img}<figcaption>${title}</figcaption></figure>\n`;
+    }
+    return `${img}\n`;
 };
 // An italic line on its own, or right under an image, is a caption:
 //   *Table 1: ...*   or   ![alt](src)\n*Caption*
@@ -81,15 +90,15 @@ const CSS_DIR = path.join(__dirname, 'css');
 const JS_DIR = path.join(__dirname, 'js');
 const ASSETS_DIR = path.join(__dirname, 'assets');
 
-// Topics group the free-form post tags into a few browsable subjects.
-// A post belongs to every topic its tags map to; its first mapped tag
-// decides the primary topic shown on cards and breadcrumbs.
+// Topics are the broad subjects posts are browsed by. A post's tags list
+// its topics first (primary topic first), then specific subject tags.
 const TOPICS = [
-    { id: 'ai', label: 'AI', tags: ['AI', 'LLM', 'LLMs', 'Agents', 'Transformer', 'Deep Learning'] },
-    { id: 'security', label: 'Security', tags: ['Security', 'Cryptography', 'Authentication', 'SSO'] },
-    { id: 'engineering', label: 'Engineering', tags: ['Software Engineering', 'Computer Science', 'Performance', 'Docker', 'Agile', 'Git', 'Architecture', 'Career'] },
-    { id: 'networking', label: 'Networking', tags: ['Networking', 'TCP', 'HTTP', 'DNS', 'Email'] },
-    { id: 'databases', label: 'Databases', tags: ['Databases', 'SQL', 'Vector Search'] }
+    { id: 'ai', label: 'AI' },
+    { id: 'security', label: 'Security' },
+    { id: 'engineering', label: 'Engineering' },
+    { id: 'systems', label: 'Systems' },
+    { id: 'networking', label: 'Networking' },
+    { id: 'databases', label: 'Databases' }
 ];
 const FALLBACK_TOPIC = 'engineering';
 const HOME_POST_LIMIT = 9;
@@ -323,7 +332,7 @@ function generateRobotsTxt() {
 function topicsFor(tags) {
     const ids = [];
     for (const tag of tags) {
-        const topic = TOPICS.find(t => t.tags.includes(tag));
+        const topic = TOPICS.find(t => t.label === tag);
         if (topic && !ids.includes(topic.id)) ids.push(topic.id);
     }
     return ids.length ? ids : [FALLBACK_TOPIC];
@@ -360,6 +369,87 @@ function copyDir(src, dest) {
             copyDir(srcPath, destPath);
         } else {
             fs.copyFileSync(srcPath, destPath);
+        }
+    }
+}
+
+// ========================================
+// Dark-mode SVG diagrams
+// ========================================
+// Diagrams are drawn for a white page. For dark mode every hex color is
+// remapped: neutrals swap ends of a ramp between the dark card background
+// and the light text color, pale fills become dark tints of the same hue,
+// and saturated strokes/text are lightened so they stay readable.
+// <mask> contents are left alone: there white/black mean show/hide.
+const DARK_SVG_BG = [0x17, 0x1a, 0x20];   // --bg-card (dark)
+const DARK_SVG_FG = [0xec, 0xee, 0xf2];   // --text-primary (dark)
+
+function rgbToHsl([r, g, b]) {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    const l = (max + min) / 2;
+    if (max === min) return [0, 0, l];
+    const d = max - min;
+    const sat = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    let h;
+    if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    return [h / 6, sat, l];
+}
+
+function hslToRgb([h, sat, l]) {
+    if (sat === 0) return [l, l, l].map(v => Math.round(v * 255));
+    const hue = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+    };
+    const q = l < 0.5 ? l * (1 + sat) : l + sat - l * sat;
+    const p = 2 * l - q;
+    return [hue(p, q, h + 1 / 3), hue(p, q, h), hue(p, q, h - 1 / 3)].map(v => Math.round(v * 255));
+}
+
+function darkColor(hex) {
+    let h = hex.slice(1);
+    if (h.length === 3) h = h.split('').map(c => c + c).join('');
+    const rgb = [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16));
+    const [hue, sat, l] = rgbToHsl(rgb);
+    const chroma = (Math.max(...rgb) - Math.min(...rgb)) / 255;
+    let out;
+    if (chroma < 0.08) {
+        // white -> card background, black -> text color
+        out = DARK_SVG_BG.map((bg, i) => Math.round(bg + (DARK_SVG_FG[i] - bg) * (1 - l)));
+    } else if (l >= 0.75) {
+        out = hslToRgb([hue, Math.min(sat, 0.35), 0.15 + (1 - l) * 0.3]);
+    } else {
+        out = hslToRgb([hue, Math.min(sat, 0.8), 0.6 + l * 0.2]);
+    }
+    return '#' + out.map(v => v.toString(16).padStart(2, '0')).join('');
+}
+
+function darkSvg(svg) {
+    return svg
+        .split(/(<mask[\s\S]*?<\/mask>)/)
+        .map(part => part.startsWith('<mask')
+            ? part
+            : part.replace(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g, darkColor))
+        .join('');
+}
+
+/** Write a .dark.svg next to every SVG under dir */
+function writeDarkSvgs(dir) {
+    if (!fs.existsSync(dir)) return;
+    for (const entry of fs.readdirSync(dir)) {
+        const full = path.join(dir, entry);
+        if (fs.statSync(full).isDirectory()) {
+            writeDarkSvgs(full);
+        } else if (entry.endsWith('.svg') && !entry.endsWith('.dark.svg')) {
+            const dark = darkSvg(fs.readFileSync(full, 'utf-8'));
+            fs.writeFileSync(full.replace(/\.svg$/, '.dark.svg'), dark);
         }
     }
 }
@@ -501,8 +591,8 @@ function parsePosts() {
 // ========================================
 function postCard(post, root = '', { hidden = false } = {}) {
     return `
-    <a href="${root}articles/${post.slug}.html" class="post-card topic--${post.topic}" data-topics="${post.topics.join(' ')}"${hidden ? ' hidden' : ''}>
-      <span class="post-card__topic"><span class="topic-dot" aria-hidden="true"></span>${topicLabel(post.topic)}</span>
+    <a href="${root}articles/${post.slug}.html" class="post-card topic--${post.topic}" data-topic="${post.topic}" data-topics="${post.topics.join(' ')}"${hidden ? ' hidden' : ''}>
+      <span class="post-card__topic"><span class="topic-dot" aria-hidden="true"></span><span class="post-card__topic-label">${topicLabel(post.topic)}</span></span>
       <h3 class="post-card__title">${post.title}</h3>
       <p class="post-card__excerpt">${post.excerpt}</p>
       <span class="post-card__meta"><time datetime="${post.dateIso}">${shortDate(post.dateIso)}</time> · ${post.readingTime} min</span>
@@ -513,7 +603,7 @@ function postCard(post, root = '', { hidden = false } = {}) {
 /** Topic filter chips; hidden until main.js wires them up */
 function topicFilter(posts) {
     const chip = (id, label, count, pressed) => `
-      <button type="button" class="topic-chip topic--${id}" data-topic="${id}" aria-pressed="${pressed}">
+      <button type="button" class="topic-chip topic--${id}" data-topic="${id}" data-label="${label}" aria-pressed="${pressed}">
         ${id === 'all' ? '' : '<span class="topic-dot" aria-hidden="true"></span>'}${label}
         <span class="topic-chip__count">${count}</span>
       </button>`;
@@ -564,6 +654,7 @@ function build() {
     copyDir(CSS_DIR, path.join(DIST_DIR, 'css'));
     copyDir(JS_DIR, path.join(DIST_DIR, 'js'));
     copyDir(ASSETS_DIR, path.join(DIST_DIR, 'assets'));
+    writeDarkSvgs(path.join(DIST_DIR, 'assets'));
 
     // Parse posts
     const posts = parsePosts();

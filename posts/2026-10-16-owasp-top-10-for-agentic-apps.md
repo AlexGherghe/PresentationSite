@@ -1,7 +1,7 @@
 ---
 title: "When Your LLM Gets Hands: The OWASP Agentic Top 10"
 date: 2026-10-16
-tags: [AI, Security, Agents, OWASP]
+tags: [Security, AI, Agents, OWASP]
 excerpt: "When an LLM is just a chatbot, prompt injection gets you an offensive reply. When an LLM has API keys, tools, and a bash terminal, prompt injection drops your production database."
 ---
 

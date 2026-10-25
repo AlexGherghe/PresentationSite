@@ -1,7 +1,7 @@
 ---
 title: "What Is a Token?"
 date: 2026-03-09
-tags: [AI, LLM, Deep Learning, Transformer]
+tags: [AI, LLMs, Tokens]
 excerpt: "An exploration of what tokens are and what it means for your wallet."
 ---
 

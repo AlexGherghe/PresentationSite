@@ -1,7 +1,7 @@
 ---
 title: "Cache Locality and Why You Should Care About It"
 date: 2026-02-23
-tags: [Performance, CPU, Cache, Java]
+tags: [Systems, Performance, CPU Caches]
 excerpt: "How cache locality can help speed up (or slow down) your programs."
 ---
 

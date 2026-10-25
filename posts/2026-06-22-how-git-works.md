@@ -1,7 +1,7 @@
 ---
 title: "Git Demystified"
 date: 2026-06-22
-tags: [Computer Science, Git]
+tags: [Systems, Git]
 excerpt: "Git has only three core data structures behind the scenes. Once you understand them, everything else (branches, tags, the staging area) just clicks into place."
 ---
 

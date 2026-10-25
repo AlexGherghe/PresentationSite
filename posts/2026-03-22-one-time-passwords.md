@@ -1,7 +1,7 @@
 ---
 title: "How Do Authenticator Apps Work?"
 date: 2026-03-22
-tags: [Security, Cryptography, Authentication]
+tags: [Security, Authentication, Cryptography]
 excerpt: "Answering how time-based one-time passwords are generated"
 ---
 

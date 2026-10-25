@@ -1,7 +1,7 @@
 ---
 title: "Cross-Site Scripting (XSS)"
 date: 2026-06-28
-tags: [Computer Science, Security]
+tags: [Security, XSS]
 excerpt: "Are you taking in text input from your frontend? Then congratulations! You may be vulnerable to Cross-Site Scripting."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Why Are LLMs Non-Deterministic?"
 date: 2026-03-02
-tags: [AI, LLM, Deep Learning, Transformer]
+tags: [AI, LLMs, Transformers]
 excerpt: "A deep dive into why Large Language Models can produce different answers even with the same input."
 ---
 

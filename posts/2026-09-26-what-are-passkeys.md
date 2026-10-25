@@ -1,7 +1,7 @@
 ---
 title: "What Are Passkeys"
 date: 2026-09-26
-tags: [Security]
+tags: [Security, Authentication, Passkeys]
 excerpt: "A lot of websites started to ask you if you want to use a passkey to log in, so what is that?"
 ---
 

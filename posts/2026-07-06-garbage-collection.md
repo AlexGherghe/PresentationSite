@@ -1,7 +1,7 @@
 ---
 title: "Garbage Collection"
 date: 2026-07-06
-tags: [Computer Science]
+tags: [Systems, Garbage Collection, Java]
 excerpt: "An introduction to how Java handles garbage collection."
 ---
 

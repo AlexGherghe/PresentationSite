@@ -1,7 +1,7 @@
 ---
 title: "Pitfalls of AI-Assisted Coding"
 date: 2026-04-13
-tags: [AI, LLMs, Software Engineering]
+tags: [Engineering, AI, AI-Assisted Coding, LLMs]
 excerpt: "How to best use AI in your day-to-day software engineering tasks."
 ---
 ## The Wild West

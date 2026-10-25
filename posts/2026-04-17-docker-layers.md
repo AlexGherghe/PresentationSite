@@ -1,7 +1,7 @@
 ---
 title: "Docker Image Layers"
 date: 2026-04-17
-tags: [Docker, Caching, Software Engineering]
+tags: [Systems, Docker, Caching]
 excerpt: "How Docker image layers work and how to best use Docker layer caching to speed up your builds."
 ---
 ## Images and Containers

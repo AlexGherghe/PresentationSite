@@ -1,7 +1,7 @@
 ---
 title: "The Era of Barely Good Enough Software"
 date: 2026-09-20
-tags: [General, AI, Society]
+tags: [Engineering, AI, Software Quality]
 excerpt: "It's always been 'good enough' at scale, but AI and the pace of change have driven us into an era where 'barely good enough' is the accepted norm."
 ---
 

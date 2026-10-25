@@ -304,7 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Topic Filter
   // ========================================
   // Cards carry data-topics; a grid with data-limit only shows that many
-  // matches. The chosen topic is kept in ?topic= so it can be linked to.
+  // matches. While a topic is selected, each card is labeled with that
+  // topic rather than its primary one, so the label explains why it's
+  // listed. The chosen topic is kept in ?topic= so it can be linked to.
   const topicFilter = document.querySelector('.topic-filter');
   const postsGrid = document.querySelector('.posts-grid');
 
@@ -312,6 +314,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const chips = topicFilter.querySelectorAll('.topic-chip');
     const cards = postsGrid.querySelectorAll('.post-card');
     const limit = parseInt(postsGrid.dataset.limit, 10) || Infinity;
+    const labels = {};
+    chips.forEach(chip => { labels[chip.dataset.topic] = chip.dataset.label; });
+
+    function labelCard(card, topicId) {
+      card.classList.remove(`topic--${card.dataset.shownTopic || card.dataset.topic}`);
+      card.classList.add(`topic--${topicId}`);
+      card.dataset.shownTopic = topicId;
+      card.querySelector('.post-card__topic-label').textContent = labels[topicId];
+    }
 
     function applyTopic(topic, updateUrl) {
       if (!topicFilter.querySelector(`[data-topic="${topic}"]`)) topic = 'all';
@@ -325,7 +336,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const matches = topic === 'all' || card.dataset.topics.split(' ').includes(topic);
         const visible = matches && shown < limit;
         card.hidden = !visible;
-        if (visible) shown++;
+        if (visible) {
+          shown++;
+          labelCard(card, topic === 'all' ? card.dataset.topic : topic);
+        }
       });
 
       if (updateUrl) {

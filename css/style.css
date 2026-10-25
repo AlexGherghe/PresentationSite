@@ -35,6 +35,7 @@
   --topic-ai: #5cc9a0;
   --topic-security: #f08a5d;
   --topic-engineering: #b3b8c2;
+  --topic-systems: #e5b85c;
   --topic-networking: #7fa6ff;
   --topic-databases: #c29bf2;
 
@@ -95,6 +96,7 @@
   --topic-ai: #0b6e4f;
   --topic-security: #b23f12;
   --topic-engineering: #454b57;
+  --topic-systems: #8a5a00;
   --topic-networking: #1d4ed8;
   --topic-databases: #7a3ab8;
 
@@ -108,6 +110,7 @@
 .topic--ai { --topic: var(--topic-ai); }
 .topic--security { --topic: var(--topic-security); }
 .topic--engineering { --topic: var(--topic-engineering); }
+.topic--systems { --topic: var(--topic-systems); }
 .topic--networking { --topic: var(--topic-networking); }
 .topic--databases { --topic: var(--topic-databases); }
 
@@ -779,6 +782,19 @@ img {
   border: 1px solid var(--border);
   background: var(--bg-card);
   transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+/* SVG diagrams ship in two versions; show the one for the active theme */
+.article-body .img-light {
+  display: none;
+}
+
+[data-theme="light"] .article-body .img-light {
+  display: block;
+}
+
+[data-theme="light"] .article-body .img-dark {
+  display: none;
 }
 
 .article-body figure img:hover,

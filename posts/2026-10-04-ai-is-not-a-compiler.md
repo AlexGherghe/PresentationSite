@@ -1,7 +1,7 @@
 ---
 title: "Comparing AI to a compiler infuriates me"
 date: 2026-10-04
-tags: [AI, Career]
+tags: [Engineering, AI, AI-Assisted Coding, Career]
 excerpt: "Compilers preserve logic across abstraction boundaries. AI guesses intent from ambiguous prompts. Comparing the two ignores the brutal verification tax of generated code."
 ---
 
