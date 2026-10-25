@@ -15,7 +15,7 @@
   --text-primary: #e4e8f1;
   --text-strong: #cbd5e1;
   --text-secondary: #94a0b6;
-  --text-muted: #7a8599;
+  --text-muted: #8792a6;
 
   --accent: #3b82f6;
   --accent-hover: #60a5fa;
@@ -65,7 +65,7 @@
   --text-primary: #0f172a;
   --text-strong: #1e293b;
   --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-muted: #5f6b7f;
 
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
@@ -657,7 +657,7 @@ img {
 }
 
 .article-body figcaption,
-.article-body p>em {
+.article-body .caption {
   display: block;
   margin-top: 12px;
   font-size: 0.85rem;

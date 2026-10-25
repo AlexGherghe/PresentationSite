@@ -52,6 +52,19 @@ renderer.image = function ({ href, title, text }) {
     }
     return `<img src="${href}" alt="${text}">\n`;
 };
+// An italic line on its own, or right under an image, is a caption:
+//   *Table 1: ...*   or   ![alt](src)\n*Caption*
+renderer.paragraph = function ({ tokens }) {
+    const parts = tokens.filter(t => !(t.type === 'text' && !t.raw.trim()));
+    const last = parts[parts.length - 1];
+    const isCaption = last && last.type === 'em' &&
+        parts.slice(0, -1).every(t => t.type === 'image');
+    if (!isCaption) {
+        return `<p>${this.parser.parseInline(tokens)}</p>\n`;
+    }
+    const images = this.parser.parseInline(parts.slice(0, -1));
+    return `${images}<p class="caption">${this.parser.parseInline([last])}</p>\n`;
+};
 marked.setOptions({ renderer });
 
 // ========================================
