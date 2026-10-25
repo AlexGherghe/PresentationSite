@@ -224,51 +224,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // ========================================
   // Table of Contents
   // ========================================
-  const tocToggle = document.getElementById('toc-toggle');
+  // Desktop shows the list as a sticky side column; on mobile it is a
+  // collapsible panel opened by #toc-toggle.
   const toc = document.getElementById('toc');
-  const tocOverlay = document.getElementById('toc-overlay');
-  const tocClose = document.getElementById('toc-close');
+  const tocToggle = document.getElementById('toc-toggle');
 
-  if (tocToggle && toc) {
-    function openTOC() {
-      toc.classList.add('active');
-      tocToggle.classList.add('active');
-      if (tocOverlay) tocOverlay.classList.add('active');
+  if (toc) {
+    const tocLinks = toc.querySelectorAll('.toc__link');
+    const mobileQuery = window.matchMedia('(max-width: 1023px)');
+
+    function setTOCOpen(open) {
+      toc.classList.toggle('open', open);
+      tocToggle.setAttribute('aria-expanded', String(open));
+      tocToggle.querySelector('.toc__toggle-label').textContent = open ? 'Hide' : 'Show';
     }
 
-    function closeTOC() {
-      toc.classList.remove('active');
-      tocToggle.classList.remove('active');
-      if (tocOverlay) tocOverlay.classList.remove('active');
+    if (tocToggle) {
+      tocToggle.addEventListener('click', () => setTOCOpen(!toc.classList.contains('open')));
     }
-
-    function toggleTOC() {
-      if (toc.classList.contains('active')) {
-        closeTOC();
-      } else {
-        openTOC();
-      }
-    }
-
-    tocToggle.addEventListener('click', toggleTOC);
-
-    if (tocClose) {
-      tocClose.addEventListener('click', closeTOC);
-    }
-
-    if (tocOverlay) {
-      tocOverlay.addEventListener('click', closeTOC);
-    }
-
-    // Close on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && toc.classList.contains('active')) {
-        closeTOC();
-      }
-    });
 
     // Smooth scroll to section when clicking a TOC link
-    const tocLinks = toc.querySelectorAll('.toc__link');
     tocLinks.forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -278,11 +253,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 72;
           const top = targetEl.getBoundingClientRect().top + window.scrollY - offset - 16;
           window.scrollTo({ top, behavior: 'smooth' });
+          history.replaceState(null, '', `#${targetId}`);
         }
 
-        // Close TOC on mobile after clicking
-        if (window.innerWidth <= 768) {
-          closeTOC();
+        if (mobileQuery.matches && tocToggle) {
+          setTOCOpen(false);
         }
       });
     });
@@ -311,11 +286,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update active link
         tocLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('data-target') === currentActiveId);
+          const active = link.getAttribute('data-target') === currentActiveId;
+          link.classList.toggle('active', active);
+          if (active) {
+            link.setAttribute('aria-current', 'location');
+          } else {
+            link.removeAttribute('aria-current');
+          }
         });
       }, observerOptions);
 
       headingElements.forEach(el => headingObserver.observe(el));
     }
+  }
+
+  // ========================================
+  // Topic Filter
+  // ========================================
+  // Cards carry data-topics; a grid with data-limit only shows that many
+  // matches. The chosen topic is kept in ?topic= so it can be linked to.
+  const topicFilter = document.querySelector('.topic-filter');
+  const postsGrid = document.querySelector('.posts-grid');
+
+  if (topicFilter && postsGrid) {
+    const chips = topicFilter.querySelectorAll('.topic-chip');
+    const cards = postsGrid.querySelectorAll('.post-card');
+    const limit = parseInt(postsGrid.dataset.limit, 10) || Infinity;
+
+    function applyTopic(topic, updateUrl) {
+      if (!topicFilter.querySelector(`[data-topic="${topic}"]`)) topic = 'all';
+
+      chips.forEach(chip => {
+        chip.setAttribute('aria-pressed', String(chip.dataset.topic === topic));
+      });
+
+      let shown = 0;
+      cards.forEach(card => {
+        const matches = topic === 'all' || card.dataset.topics.split(' ').includes(topic);
+        const visible = matches && shown < limit;
+        card.hidden = !visible;
+        if (visible) shown++;
+      });
+
+      if (updateUrl) {
+        const url = new URL(window.location.href);
+        if (topic === 'all') {
+          url.searchParams.delete('topic');
+        } else {
+          url.searchParams.set('topic', topic);
+        }
+        history.replaceState(null, '', url);
+      }
+    }
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => applyTopic(chip.dataset.topic, true));
+    });
+
+    topicFilter.hidden = false;
+    applyTopic(new URLSearchParams(window.location.search).get('topic') || 'all', false);
   }
 });

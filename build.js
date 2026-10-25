@@ -81,6 +81,19 @@ const CSS_DIR = path.join(__dirname, 'css');
 const JS_DIR = path.join(__dirname, 'js');
 const ASSETS_DIR = path.join(__dirname, 'assets');
 
+// Topics group the free-form post tags into a few browsable subjects.
+// A post belongs to every topic its tags map to; its first mapped tag
+// decides the primary topic shown on cards and breadcrumbs.
+const TOPICS = [
+    { id: 'ai', label: 'AI', tags: ['AI', 'LLM', 'LLMs', 'Agents', 'Transformer', 'Deep Learning'] },
+    { id: 'security', label: 'Security', tags: ['Security', 'Cryptography', 'Authentication', 'SSO'] },
+    { id: 'engineering', label: 'Engineering', tags: ['Software Engineering', 'Computer Science', 'Performance', 'Docker', 'Agile', 'Git', 'Architecture', 'Career'] },
+    { id: 'networking', label: 'Networking', tags: ['Networking', 'TCP', 'HTTP', 'DNS', 'Email'] },
+    { id: 'databases', label: 'Databases', tags: ['Databases', 'SQL', 'Vector Search'] }
+];
+const FALLBACK_TOPIC = 'engineering';
+const HOME_POST_LIMIT = 9;
+
 // ========================================
 // Utilities
 // ========================================
@@ -306,6 +319,29 @@ function generateRobotsTxt() {
     return `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
 }
 
+/** Map a post's tags to topic ids, primary topic first */
+function topicsFor(tags) {
+    const ids = [];
+    for (const tag of tags) {
+        const topic = TOPICS.find(t => t.tags.includes(tag));
+        if (topic && !ids.includes(topic.id)) ids.push(topic.id);
+    }
+    return ids.length ? ids : [FALLBACK_TOPIC];
+}
+
+function topicLabel(id) {
+    return TOPICS.find(t => t.id === id).label;
+}
+
+/** Format a date as "Oct 24, 2026" for compact meta lines */
+function shortDate(iso) {
+    if (!iso) return '';
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString('en-US', {
+        timeZone: 'UTC', year: 'numeric', month: 'short', day: 'numeric'
+    });
+}
+
 /** Generate a slug from the markdown filename */
 function slug(filename) {
     return filename
@@ -353,12 +389,11 @@ const COPY_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" s
 const CHECK_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
 const CHEVRON_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`;
 
-const TOC_ICON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="15" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>`;
-const TOC_CLOSE_ICON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
-
 // ========================================
 // Generate Table of Contents HTML
 // ========================================
+// Desktop: a sticky "On this page" column beside the article.
+// Mobile: a collapsible "In this article" panel above the body.
 function generateTOC(htmlContent) {
     const headingRegex = /<h([23]) id="([^"]+)">([\s\S]*?)<\/h[23]>/g;
     const headings = [];
@@ -374,28 +409,24 @@ function generateTOC(htmlContent) {
 
     if (headings.length < 2) return ''; // Don't show TOC for very short articles
 
+    const sections = headings.filter(h => h.level === 2).length || headings.length;
     const tocItems = headings.map(h => {
         const indent = h.level === 3 ? ' toc__link--sub' : '';
-        return `<a href="#${h.id}" class="toc__link${indent}" data-target="${h.id}">${h.text}</a>`;
+        return `<li><a href="#${h.id}" class="toc__link${indent}" data-target="${h.id}">${h.text}</a></li>`;
     }).join('\n            ');
 
     return `
     <!-- Table of Contents -->
-    <button class="toc-toggle" id="toc-toggle" aria-label="Table of Contents">
-        <span class="toc-toggle__icon toc-toggle__icon--open">${TOC_ICON}</span>
-        <span class="toc-toggle__icon toc-toggle__icon--close">${TOC_CLOSE_ICON}</span>
-        <span class="toc-toggle__label">Contents</span>
-    </button>
-    <nav class="toc" id="toc" aria-label="Table of Contents">
-        <div class="toc__header">
-            <span class="toc__title">Contents</span>
-            <button class="toc__close" id="toc-close" aria-label="Close table of contents">${TOC_CLOSE_ICON}</button>
-        </div>
-        <div class="toc__links">
+    <nav class="toc" id="toc" aria-label="Table of contents">
+        <button class="toc__toggle" id="toc-toggle" aria-expanded="false" aria-controls="toc-list">
+            <span class="toc__title">In this article · ${sections} sections</span>
+            <span class="toc__toggle-label">Show</span>
+        </button>
+        <p class="toc__heading">On this page</p>
+        <ol class="toc__list" id="toc-list">
             ${tocItems}
-        </div>
-    </nav>
-    <div class="toc-overlay" id="toc-overlay"></div>`;
+        </ol>
+    </nav>`;
 }
 
 function postProcessCodeBlocks(html) {
@@ -446,8 +477,11 @@ function parsePosts() {
         const { data, content } = matter(raw);
         const htmlContent = postProcessCodeBlocks(marked(content));
         const dateInfo = parseDate(data.date);
+        const topics = topicsFor(data.tags || []);
 
         return {
+            topic: topics[0],
+            topics,
             title: data.title || 'Untitled',
             date: data.date,
             dateIso: dateInfo.iso,
@@ -465,22 +499,52 @@ function parsePosts() {
 // ========================================
 // Generate a post card HTML
 // ========================================
-function postCard(post, root = '') {
-    const tags = post.tags
-        .map(tag => `<span class="tag">${tag}</span>`)
-        .join('');
-
+function postCard(post, root = '', { hidden = false } = {}) {
     return `
-    <a href="${root}articles/${post.slug}.html" class="post-card fade-in">
-      <div class="post-card__meta">
-        <span class="post-card__date">${post.dateFormatted}</span>
-        <span class="post-card__reading-time">${post.readingTime} min read</span>
-      </div>
+    <a href="${root}articles/${post.slug}.html" class="post-card topic--${post.topic}" data-topics="${post.topics.join(' ')}"${hidden ? ' hidden' : ''}>
+      <span class="post-card__topic"><span class="topic-dot" aria-hidden="true"></span>${topicLabel(post.topic)}</span>
       <h3 class="post-card__title">${post.title}</h3>
       <p class="post-card__excerpt">${post.excerpt}</p>
-      <div class="post-card__tags">${tags}</div>
+      <span class="post-card__meta"><time datetime="${post.dateIso}">${shortDate(post.dateIso)}</time> · ${post.readingTime} min</span>
     </a>
   `;
+}
+
+/** Topic filter chips; hidden until main.js wires them up */
+function topicFilter(posts) {
+    const chip = (id, label, count, pressed) => `
+      <button type="button" class="topic-chip topic--${id}" data-topic="${id}" aria-pressed="${pressed}">
+        ${id === 'all' ? '' : '<span class="topic-dot" aria-hidden="true"></span>'}${label}
+        <span class="topic-chip__count">${count}</span>
+      </button>`;
+    const chips = [chip('all', 'All', posts.length, true)];
+    for (const topic of TOPICS) {
+        const count = posts.filter(p => p.topics.includes(topic.id)).length;
+        if (count) chips.push(chip(topic.id, topic.label, count, false));
+    }
+    return `<div class="topic-filter" role="group" aria-label="Filter by topic" hidden>${chips.join('')}
+    </div>`;
+}
+
+/** "More in <topic>" links at the end of an article */
+function relatedPosts(post, posts) {
+    const related = posts
+        .filter(p => p.slug !== post.slug && p.topics.includes(post.topic))
+        .slice(0, 3);
+    if (!related.length) return '';
+
+    const items = related.map(p => `
+        <a href="${p.slug}.html" class="related__card">
+          <span class="related__title">${p.title}</span>
+          <span class="related__meta">${p.readingTime} min</span>
+        </a>`).join('');
+
+    return `
+    <section class="related topic--${post.topic}" aria-labelledby="related-title">
+      <h2 class="related__heading" id="related-title">More in <span class="topic-text">${topicLabel(post.topic)}</span></h2>
+      <div class="related__grid">${items}
+      </div>
+    </section>`;
 }
 
 // ========================================
@@ -506,15 +570,25 @@ function build() {
     console.log(`📝 Found ${posts.length} post(s)`);
 
     // Generate post cards HTML
+    // The home page renders every card so the topic filter can reach older
+    // posts, but only the newest few are visible until a topic is picked.
     const allPostCards = posts.map(p => postCard(p)).join('\n');
-    const latestPostCards = posts.slice(0, 3).map(p => postCard(p)).join('\n');
+    const homePostCards = posts
+        .map((p, i) => postCard(p, '', { hidden: i >= HOME_POST_LIMIT }))
+        .join('\n');
+    const filterHtml = topicFilter(posts);
 
     // --- Home page ---
     const homeCanonical = `${SITE_URL}/`;
     const homeTitle = 'Alexandru Gherghe — Software Engineer';
     const homeDesc = 'Alexandru Gherghe — Software Engineer. Blog, tutorials, and articles about software engineering and AI.';
     const homeTemplate = readTemplate('home.html');
-    const homeContent = homeTemplate.replace('{{posts}}', latestPostCards);
+    const homeContent = homeTemplate
+        .replace('{{filter}}', () => filterHtml)
+        .replace('{{posts}}', () => homePostCards)
+        .replace('{{limit}}', HOME_POST_LIMIT)
+        .replace(/\{\{post_count\}\}/g, posts.length)
+        .replace('{{since}}', posts.length ? shortDate(posts[posts.length - 1].dateIso).replace(/ \d+,/, '') : '');
     const homePage = wrapInBase(homeContent, {
         title: homeTitle,
         description: homeDesc,
@@ -537,7 +611,10 @@ function build() {
     const blogTitle = 'Blog — Alexandru Gherghe';
     const blogDesc = 'Articles, tutorials, and deep dives into software engineering by Alexandru Gherghe.';
     const blogTemplate = readTemplate('blog.html');
-    const blogContent = blogTemplate.replace('{{posts}}', allPostCards);
+    const blogContent = blogTemplate
+        .replace('{{filter}}', () => filterHtml)
+        .replace('{{posts}}', () => allPostCards)
+        .replace(/\{\{post_count\}\}/g, posts.length);
     const blogPage = wrapInBase(blogContent, {
         title: blogTitle,
         description: blogDesc,
@@ -583,54 +660,55 @@ function build() {
       } : {
         fontFamily: "'Inter', sans-serif",
         darkMode: true,
-        background: '#1a2233',
-        mainBkg: '#1e293b',
-        textColor: '#e4e8f1',
-        lineColor: '#60a5fa',
-        primaryColor: '#1e293b',
+        background: '#171A20',
+        mainBkg: '#1C2027',
+        textColor: '#ECEEF2',
+        lineColor: '#7FA6FF',
+        primaryColor: '#1C2027',
         primaryTextColor: '#f8fafc',
-        primaryBorderColor: '#3b82f6',
-        secondaryColor: '#1e293b',
+        primaryBorderColor: '#7FA6FF',
+        secondaryColor: '#1C2027',
         secondaryTextColor: '#f8fafc',
-        secondaryBorderColor: '#3b82f6',
-        tertiaryColor: '#111827',
+        secondaryBorderColor: '#7FA6FF',
+        tertiaryColor: '#13161B',
         tertiaryTextColor: '#cbd5e1',
-        tertiaryBorderColor: '#334155',
-        actorBkg: '#1e293b',
-        actorBorder: '#3b82f6',
+        tertiaryBorderColor: '#2E333D',
+        actorBkg: '#1C2027',
+        actorBorder: '#7FA6FF',
         actorTextColor: '#f8fafc',
-        actorLineColor: '#64748b',
-        signalColor: '#93c5fd',
+        actorLineColor: '#8E94A0',
+        signalColor: '#A9C3FF',
         signalTextColor: '#e2e8f0',
-        labelBoxBkgColor: '#1e293b',
-        labelBoxBorderColor: '#3b82f6',
+        labelBoxBkgColor: '#1C2027',
+        labelBoxBorderColor: '#7FA6FF',
         labelTextColor: '#f8fafc',
-        noteBkgColor: '#1e293b',
-        noteTextColor: '#93c5fd',
-        noteBorderColor: '#3b82f6',
-        activationBkgColor: '#1e293b',
-        activationBorderColor: '#3b82f6',
-        sequenceNumberColor: '#0a0e17'
+        noteBkgColor: '#1C2027',
+        noteTextColor: '#A9C3FF',
+        noteBorderColor: '#7FA6FF',
+        activationBkgColor: '#1C2027',
+        activationBorderColor: '#7FA6FF',
+        sequenceNumberColor: '#0F1115'
       }
     });
   </script>`;
 
     for (const post of posts) {
-        const tagsHtml = post.tags
-            .map(tag => `<span class="tag">${tag}</span>`)
-            .join('');
-
         // Generate TOC from post content
         const tocHtml = generateTOC(post.content);
 
         const articleContent = articleTemplate
-            .replace('{{root}}', '../')
+            .replace(/\{\{root\}\}/g, '../')
+            .replace(/\{\{topic\}\}/g, post.topic)
+            .replace('{{topic_label}}', topicLabel(post.topic))
             .replace('{{title}}', post.title)
-            .replace('{{date}}', post.dateFormatted)
+            .replace('{{date_iso}}', post.dateIso)
+            .replace('{{date}}', shortDate(post.dateIso))
             .replace('{{reading_time}}', post.readingTime)
-            .replace('{{tags}}', tagsHtml)
+            .replace('{{tags}}', post.tags.join(', '))
+            .replace('{{layout_class}}', tocHtml ? '' : ' article-layout--no-toc')
             .replace('{{toc}}', () => tocHtml)
-            .replace('{{content}}', () => post.content);
+            .replace('{{content}}', () => post.content)
+            .replace('{{related}}', () => relatedPosts(post, posts));
 
         const articleCanonical = `${SITE_URL}/articles/${post.slug}.html`;
         const articleTitle = `${post.title} — Alexandru Gherghe`;

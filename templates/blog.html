@@ -1,15 +1,16 @@
 <!-- Blog Header -->
 <header class="page-header">
-    <div class="container fade-in">
-        <h1 class="page-header__title">Blog</h1>
-        <p class="page-header__description">Articles, tutorials, and deep dives into software engineering</p>
+    <div class="container">
+        <h1 class="page-header__title">Articles</h1>
+        <p class="page-header__description">{{post_count}} articles, tutorials and deep dives into software engineering.</p>
     </div>
 </header>
 
 <!-- Posts -->
-<section class="section" style="padding-top: 24px;">
+<section class="section section--posts" aria-label="All articles">
     <div class="container">
-        <div class="posts-grid stagger">
+        {{filter}}
+        <div class="posts-grid">
             {{posts}}
         </div>
     </div>

@@ -1,24 +1,25 @@
 <!-- Hero -->
 <section class="hero">
-    <div class="container hero__content fade-in">
-        <p class="hero__greeting">Hello, I'm</p>
-        <h1 class="hero__name">Alexandru <span>Gherghe</span></h1>
-        <p class="hero__title">Software Engineer, generally curious dude</p>
-        <p class="hero__description">
-            I write articles and tutorials about the software-related subjects I find interesting at the moment.
-        </p>
+    <div class="container hero__inner">
+        <div class="hero__content">
+            <h1 class="hero__title">Software explained, one concept at a time.</h1>
+            <p class="hero__description">
+                I'm a software engineer writing about the things I find interesting at the moment: AI, security,
+                networking and how the machinery underneath actually works.
+            </p>
+        </div>
+        <p class="hero__stats">{{post_count}} articles · since {{since}}</p>
     </div>
 </section>
 
-<!-- Latest Posts -->
-<section class="section">
+<!-- Posts by topic -->
+<section class="section section--posts" aria-labelledby="posts-title">
     <div class="container">
-        <div class="section__header fade-in">
-            <h2 class="section__title">Latest Posts</h2>
-            <p class="section__subtitle">Thoughts, tutorials, and explorations</p>
-        </div>
-        <div class="posts-grid stagger">
+        <h2 class="visually-hidden" id="posts-title">Latest articles</h2>
+        {{filter}}
+        <div class="posts-grid" data-limit="{{limit}}">
             {{posts}}
         </div>
+        <p class="section__more"><a href="blog.html" class="button">See all {{post_count}} articles</a></p>
     </div>
 </section>

@@ -1,24 +1,23 @@
-<!-- Article Header -->
-<header class="article-header">
-    <div class="container container--narrow fade-in">
-        <a href="{{root}}blog.html" class="article-header__back">← Back to Blog</a>
+<div class="container article-layout topic--{{topic}}{{layout_class}}">
+    <!-- Article Header -->
+    <header class="article-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="{{root}}blog.html">Articles</a>
+            <span class="breadcrumb__sep" aria-hidden="true">/</span>
+            <a href="{{root}}blog.html?topic={{topic}}" class="breadcrumb__topic"><span class="topic-dot" aria-hidden="true"></span>{{topic_label}}</a>
+        </nav>
         <h1 class="article-header__title">{{title}}</h1>
-        <div class="article-header__meta">
-            <span>{{date}}</span>
-            <span>·</span>
-            <span>{{reading_time}} min read</span>
-        </div>
-        <div class="article-header__tags">
-            {{tags}}
-        </div>
-    </div>
-</header>
+        <p class="article-header__meta">
+            <time datetime="{{date_iso}}">{{date}}</time> · {{reading_time}} min read · {{tags}}
+        </p>
+    </header>
 
-{{toc}}
+    {{toc}}
 
-<!-- Article Body -->
-<article class="article-body">
-    <div class="container container--narrow fade-in">
+    <!-- Article Body -->
+    <article class="article-body">
         {{content}}
-    </div>
-</article>
+    </article>
+
+    {{related}}
+</div>
